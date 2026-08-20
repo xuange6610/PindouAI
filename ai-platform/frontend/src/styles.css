@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: Inter, "PingFang SC", "Microsoft YaHei", sans-serif;
+  color: #1d2525;
+  background: #f5f7f7;
+  font-synthesis: none;
+}
+
+* { box-sizing: border-box; }
+html, body, #app { width: 100%; height: 100%; margin: 0; }
+button, input, textarea { letter-spacing: 0; }
+.markdown-body { line-height: 1.72; overflow-wrap: anywhere; }
+.markdown-body pre { overflow: auto; border: 1px solid #d9dfdd; border-radius: 6px; padding: 14px; background: #f7f9f8; }
+.markdown-body code { font-family: "Cascadia Code", Consolas, monospace; }
+.markdown-body table { border-collapse: collapse; width: 100%; }
+.markdown-body th, .markdown-body td { border: 1px solid #d9dfdd; padding: 7px 9px; }

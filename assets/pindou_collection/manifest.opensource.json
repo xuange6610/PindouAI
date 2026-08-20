@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "sourceFileCount": 4,
+  "previewFileCount": 4,
+  "categories": [
+    {
+      "name": "开源示例",
+      "items": [
+        {
+          "name": "精致像素示例.png",
+          "relativePath": "开源示例/精致像素示例.png",
+          "asset": "assets/pindou_collection/sample_refined.png",
+          "width": 96,
+          "height": 96,
+          "bytes": 409,
+          "extension": ".png"
+        },
+        {
+          "name": "动漫像素示例.png",
+          "relativePath": "开源示例/动漫像素示例.png",
+          "asset": "assets/pindou_collection/sample_anime.png",
+          "width": 96,
+          "height": 96,
+          "bytes": 431,
+          "extension": ".png"
+        },
+        {
+          "name": "Q版像素示例.png",
+          "relativePath": "开源示例/Q版像素示例.png",
+          "asset": "assets/pindou_collection/sample_chibi.png",
+          "width": 96,
+          "height": 96,
+          "bytes": 402,
+          "extension": ".png"
+        },
+        {
+          "name": "田园像素示例.png",
+          "relativePath": "开源示例/田园像素示例.png",
+          "asset": "assets/pindou_collection/sample_farm.png",
+          "width": 96,
+          "height": 96,
+          "bytes": 426,
+          "extension": ".png"
+        }
+      ]
+    }
+  ]
+}

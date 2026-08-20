@@ -1,0 +1,83 @@
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.build/
+.buildlog/
+.history
+.svn/
+.swiftpm/
+migrate_working_dir/
+
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# The .vscode folder contains launch configuration and tasks you configure in
+# VS Code which you may wish to be included in version control, so this line
+# is commented out by default.
+#.vscode/
+
+# Flutter/Dart/Pub related
+**/doc/api/
+**/ios/Flutter/.last_build_id
+.dart_tool/
+.flutter-plugins-dependencies
+.pub-cache/
+.pub/
+/build/
+**/build/
+/coverage/
+
+# Symbolication related
+app.*.symbols
+
+# Obfuscation related
+app.*.map.json
+
+# Android Studio will place build artifacts here
+/android/app/debug
+/android/app/profile
+/android/app/release
+
+# Python and local service environments
+**/__pycache__/
+.venv/
+**/.venv/
+
+# Secrets. Commit only example templates.
+.env
+.env.*
+**/.env
+**/.env.*
+!.env.example
+!**/.env.example
+**/key.properties
+**/keystore.properties
+**/*.jks
+**/*.keystore
+**/*.pem
+**/*.key
+
+# Machine-local configuration
+.vscode/
+**/local.properties
+
+# Release files and local source material
+/artifacts/
+/dist/
+/release/
+/.playwright-cli/
+/*.apk
+/*.exe
+/*.zip
+/爆款拼豆高清图纸电子素材创意手工个性DIY像素画图纸/
+/android/app/src/main/assets/pindou_originals/
+/assets/pindou_collection/*
+!/assets/pindou_collection/manifest.opensource.json
+!/assets/pindou_collection/sample_*.png

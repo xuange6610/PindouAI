@@ -1,0 +1,439 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#201d1d">
+  <meta name="description" content="拼豆 AI 设计：把照片、文字和灵感转换成真正能制作的品牌色号拼豆图纸。">
+  <link rel="icon" href="favicon.png" type="image/png">
+  <title>拼豆 AI 设计 | 离线优先拼豆图纸工作台</title>
+  <style>
+    :root {
+      --ink: #201d1d;
+      --muted: #6f6865;
+      --paper: #fffaf6;
+      --white: #ffffff;
+      --coral: #f15f51;
+      --coral-dark: #c63f35;
+      --teal: #147d78;
+      --teal-pale: #dff2ef;
+      --gold: #f4c84a;
+      --line: #e9ded8;
+      --max: 1180px;
+      color-scheme: light;
+    }
+
+    * { box-sizing: border-box; letter-spacing: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: "FZLanTingHeiS", "Microsoft YaHei", "PingFang SC", sans-serif;
+      line-height: 1.65;
+    }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    button { font: inherit; }
+    :focus-visible { outline: 3px solid var(--gold); outline-offset: 4px; }
+    .shell { width: min(calc(100% - 40px), var(--max)); margin: 0 auto; }
+    .skip-link { position: fixed; left: 16px; top: -80px; z-index: 20; background: var(--gold); padding: 10px 14px; color: var(--ink); }
+    .skip-link:focus { top: 12px; }
+
+    .site-nav {
+      position: fixed;
+      inset: 0 0 auto;
+      z-index: 10;
+      height: 64px;
+      color: var(--white);
+      background: rgba(24, 22, 22, .92);
+      border-bottom: 1px solid rgba(255, 255, 255, .14);
+    }
+    .nav-inner { height: 100%; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+    .brand { display: flex; align-items: center; gap: 11px; text-decoration: none; font-weight: 900; }
+    .brand-mark { width: 34px; height: 34px; border-radius: 50%; background: var(--coral); display: grid; place-items: center; border: 2px solid var(--white); }
+    .brand-mark::after { content: ""; width: 14px; height: 14px; border-radius: 50%; border: 2px dotted var(--white); }
+    .nav-links { display: flex; align-items: center; gap: 24px; }
+    .nav-links a { text-decoration: none; font-size: 14px; font-weight: 700; }
+    .nav-links a:hover { color: var(--gold); }
+    .repo-link { border: 1px solid rgba(255,255,255,.45); padding: 8px 12px; border-radius: 4px; }
+
+    .hero {
+      position: relative;
+      height: min(760px, calc(100svh - 32px));
+      min-height: 560px;
+      display: flex;
+      align-items: center;
+      color: var(--white);
+      background-color: #393635;
+      background-image: url("screenshots/custom-board-windows.png");
+      background-size: cover;
+      background-position: center;
+      overflow: hidden;
+    }
+    .hero::before { content: ""; position: absolute; inset: 0; background: rgba(22, 20, 20, .77); }
+    .hero-copy { position: relative; z-index: 1; max-width: 720px; padding-top: 54px; animation: hero-in .65s ease-out both; }
+    .eyebrow { margin: 0 0 14px; color: var(--gold); font-weight: 900; font-size: 14px; text-transform: uppercase; }
+    h1 { margin: 0; max-width: 720px; font-size: 64px; line-height: 1.08; font-weight: 950; }
+    .hero-lead { margin: 24px 0 0; max-width: 650px; font-size: 24px; line-height: 1.55; color: #fff4ef; }
+    .hero-detail { max-width: 620px; margin: 13px 0 0; color: #d9d2ce; font-size: 16px; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 34px; }
+    .button { display: inline-flex; min-height: 46px; align-items: center; justify-content: center; padding: 10px 18px; border-radius: 4px; text-decoration: none; font-weight: 900; border: 1px solid transparent; cursor: pointer; }
+    .button-primary { background: var(--coral); color: var(--white); }
+    .button-primary:hover { background: var(--coral-dark); }
+    .button-secondary { border-color: rgba(255,255,255,.55); color: var(--white); background: rgba(0,0,0,.12); }
+    .button-secondary:hover { border-color: var(--gold); color: var(--gold); }
+    .hero-stats { display: flex; flex-wrap: wrap; gap: 28px; margin-top: 38px; padding-top: 22px; border-top: 1px solid rgba(255,255,255,.22); }
+    .hero-stats strong { display: block; font-size: 23px; color: var(--gold); }
+    .hero-stats span { color: #d9d2ce; font-size: 13px; }
+
+    .capability-band { background: var(--teal); color: var(--white); }
+    .capability-grid { min-height: 112px; display: grid; grid-template-columns: repeat(4, 1fr); align-items: stretch; }
+    .capability { padding: 25px 22px; border-left: 1px solid rgba(255,255,255,.18); }
+    .capability:last-child { border-right: 1px solid rgba(255,255,255,.18); }
+    .capability strong { display: block; font-size: 16px; }
+    .capability span { color: #cce5e2; font-size: 13px; }
+
+    .section { padding: 96px 0; }
+    .section-light { background: var(--white); }
+    .section-dark { background: var(--ink); color: var(--white); }
+    .section-teal { background: var(--teal-pale); }
+    .section-head { display: grid; grid-template-columns: .8fr 1.2fr; gap: 64px; align-items: end; margin-bottom: 48px; }
+    .section-kicker { margin: 0 0 9px; color: var(--coral-dark); font-size: 13px; font-weight: 900; text-transform: uppercase; }
+    h2 { margin: 0; font-size: 40px; line-height: 1.2; }
+    .section-intro { margin: 0; color: var(--muted); font-size: 17px; }
+    .section-dark .section-intro { color: #c9c1bd; }
+
+    .steps { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+    .step { padding: 28px 24px 32px; border-left: 1px solid var(--line); }
+    .step:last-child { border-right: 1px solid var(--line); }
+    .step-number { display: block; color: var(--coral); font-size: 34px; font-weight: 950; }
+    .step h3 { margin: 9px 0 8px; font-size: 19px; }
+    .step p { margin: 0; color: var(--muted); font-size: 14px; }
+
+    .gallery { display: grid; grid-template-columns: 1.45fr .75fr; gap: 18px; align-items: stretch; }
+    .shot { appearance: none; padding: 0; border: 1px solid #403b39; background: #2c2928; color: inherit; text-align: left; cursor: zoom-in; overflow: hidden; border-radius: 6px; }
+    .shot img { width: 100%; height: 430px; object-fit: cover; object-position: top; transition: transform .35s ease; }
+    .shot:hover img { transform: scale(1.018); }
+    .shot-meta { display: flex; justify-content: space-between; gap: 18px; padding: 16px 18px; }
+    .shot-meta strong { font-size: 15px; }
+    .shot-meta span { color: #aaa19c; font-size: 12px; }
+    .gallery-side { display: grid; grid-template-rows: 1fr 1fr; gap: 18px; min-height: 0; }
+    .gallery-side .shot img { height: 161px; }
+
+    .pipeline { display: grid; grid-template-columns: repeat(7, 1fr); align-items: stretch; border: 1px solid #b6d9d5; background: var(--white); }
+    .pipe { position: relative; min-height: 150px; padding: 26px 16px; border-right: 1px solid #b6d9d5; }
+    .pipe:last-child { border-right: 0; }
+    .pipe::after { content: "→"; position: absolute; right: -13px; top: 57px; z-index: 1; width: 26px; height: 26px; display: grid; place-items: center; color: var(--white); background: var(--teal); border-radius: 50%; font-weight: 900; }
+    .pipe:last-child::after { display: none; }
+    .pipe span { color: var(--coral-dark); font-size: 12px; font-weight: 900; }
+    .pipe strong { display: block; margin-top: 8px; font-size: 15px; line-height: 1.45; }
+
+    .feature-list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); }
+    .feature { min-height: 174px; padding: 26px; background: var(--paper); }
+    .feature b { display: block; margin-bottom: 10px; font-size: 18px; }
+    .feature p { margin: 0; color: var(--muted); font-size: 14px; }
+
+    .start-layout { display: grid; grid-template-columns: .8fr 1.2fr; gap: 60px; align-items: start; }
+    .start-layout > * { min-width: 0; }
+    .requirements { margin: 24px 0 0; padding-left: 20px; color: var(--muted); }
+    .command { position: relative; margin-bottom: 12px; padding: 18px 96px 18px 18px; background: #282423; color: #f8f0ec; border-radius: 5px; overflow: auto; white-space: nowrap; font-family: Consolas, "Courier New", monospace; }
+    .copy { position: absolute; top: 10px; right: 10px; min-width: 66px; min-height: 36px; border: 1px solid #655e5a; border-radius: 4px; color: var(--white); background: #3a3533; cursor: pointer; }
+    .copy:hover { border-color: var(--gold); color: var(--gold); }
+    .note { margin-top: 18px; padding: 16px 18px; border-left: 5px solid var(--gold); background: #fff4ca; color: #4b4020; }
+
+    .closing { padding: 76px 0; color: var(--white); background: var(--coral-dark); }
+    .closing-inner { display: flex; justify-content: space-between; align-items: center; gap: 36px; }
+    .closing h2 { max-width: 640px; }
+    .closing .button { background: var(--white); color: var(--coral-dark); }
+    footer { padding: 36px 0; background: #171515; color: #ada5a1; font-size: 13px; }
+    .footer-inner { display: flex; justify-content: space-between; gap: 24px; }
+    footer a:hover { color: var(--gold); }
+
+    dialog { width: min(1100px, calc(100% - 32px)); max-height: calc(100% - 32px); padding: 0; border: 1px solid #5d5652; border-radius: 6px; background: #171515; color: var(--white); }
+    dialog::backdrop { background: rgba(0,0,0,.82); }
+    .dialog-bar { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 12px 16px; border-bottom: 1px solid #3f3a38; }
+    .dialog-close { width: 40px; height: 40px; border: 1px solid #69615d; border-radius: 50%; background: transparent; color: var(--white); cursor: pointer; font-size: 22px; }
+    .dialog-image { max-height: calc(100vh - 116px); margin: auto; object-fit: contain; }
+    .reveal { opacity: 0; transform: translateY(18px); transition: opacity .55s ease, transform .55s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    @keyframes hero-in { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: none; } }
+
+    @media (max-width: 900px) {
+      .nav-links a:not(.repo-link) { display: none; }
+      h1 { font-size: 48px; }
+      .hero-lead { font-size: 20px; }
+      .capability-grid { grid-template-columns: repeat(2, 1fr); }
+      .capability:nth-child(2) { border-right: 1px solid rgba(255,255,255,.18); }
+      .section-head, .start-layout { grid-template-columns: 1fr; gap: 22px; }
+      .steps { grid-template-columns: repeat(2, 1fr); }
+      .step:nth-child(2) { border-right: 1px solid var(--line); }
+      .gallery { grid-template-columns: 1fr; }
+      .gallery-side { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
+      .pipeline { grid-template-columns: repeat(4, 1fr); }
+      .pipe:nth-child(4) { border-right: 0; }
+      .pipe:nth-child(4)::after { display: none; }
+      .pipe:nth-child(n+5) { border-top: 1px solid #b6d9d5; }
+      .feature-list { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 620px) {
+      .shell { width: min(calc(100% - 28px), var(--max)); }
+      .site-nav { height: 58px; }
+      .brand { font-size: 14px; }
+      .brand-mark { width: 30px; height: 30px; }
+      .repo-link { padding: 7px 9px; }
+      .hero { height: calc(100svh - 28px); min-height: 590px; background-position: 29% center; }
+      .hero-copy { padding-top: 42px; }
+      h1 { font-size: 40px; }
+      .hero-lead { margin-top: 18px; font-size: 18px; }
+      .hero-detail { font-size: 14px; }
+      .hero-actions { margin-top: 24px; }
+      .button { width: 100%; }
+      .hero-stats { gap: 18px; margin-top: 25px; }
+      .hero-stats strong { font-size: 19px; }
+      .capability-grid { grid-template-columns: 1fr 1fr; }
+      .capability { padding: 18px 14px; }
+      .section { padding: 68px 0; }
+      h2 { font-size: 31px; }
+      .section-head { margin-bottom: 32px; }
+      .steps { grid-template-columns: 1fr; }
+      .step, .step:nth-child(2) { border-right: 1px solid var(--line); }
+      .shot img { height: 260px; }
+      .gallery-side { grid-template-columns: 1fr; }
+      .gallery-side .shot img { height: 220px; }
+      .pipeline { grid-template-columns: 1fr 1fr; }
+      .pipe, .pipe:nth-child(4) { border-right: 1px solid #b6d9d5; border-top: 1px solid #b6d9d5; }
+      .pipe:nth-child(-n+2) { border-top: 0; }
+      .pipe:nth-child(even) { border-right: 0; }
+      .pipe::after { display: none; }
+      .feature-list { grid-template-columns: 1fr; }
+      .feature { min-height: auto; }
+      .closing-inner, .footer-inner { align-items: flex-start; flex-direction: column; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+      .reveal { opacity: 1; transform: none; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">跳到主要内容</a>
+  <nav class="site-nav" aria-label="主要导航">
+    <div class="shell nav-inner">
+      <a class="brand" href="#top" aria-label="返回首页">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span>拼豆 AI 设计</span>
+      </a>
+      <div class="nav-links">
+        <a href="#workflow">工作流程</a>
+        <a href="#screenshots">真实界面</a>
+        <a href="#architecture">技术原理</a>
+        <a href="#start">快速开始</a>
+        <a class="repo-link" href="https://github.com/xuange6610/PindouAI">GitHub ↗</a>
+      </div>
+    </div>
+  </nav>
+
+  <main id="main">
+    <section id="top" class="hero" aria-labelledby="hero-title">
+      <div class="shell hero-copy">
+        <p class="eyebrow">Offline-first bead design studio</p>
+        <h1 id="hero-title">拼豆 AI 设计</h1>
+        <p class="hero-lead">把照片、文字和灵感，转换成真正能制作的品牌色号拼豆图纸。</p>
+        <p class="hero-detail">从裁切、降色和色卡匹配，到编号格子、用量统计、手动画板与 PDF 导出，一套 Flutter 应用完成。</p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="https://github.com/xuange6610/PindouAI">查看源代码</a>
+          <a class="button button-secondary" href="#screenshots">先看真实界面</a>
+        </div>
+        <div class="hero-stats" aria-label="项目能力概览">
+          <div><strong>20-200</strong><span>目标画板格数</span></div>
+          <div><strong>5+</strong><span>品牌色卡体系</span></div>
+          <div><strong>离线</strong><span>核心图片转换</span></div>
+          <div><strong>PNG / PDF</strong><span>图纸与清单导出</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="capability-band" aria-label="核心能力">
+      <div class="shell capability-grid">
+        <div class="capability"><strong>照片转图纸</strong><span>裁切、降色、去噪、编号</span></div>
+        <div class="capability"><strong>品牌色号</strong><span>LAB 与 CIEDE2000 匹配</span></div>
+        <div class="capability"><strong>自由创作</strong><span>手动画板与文字拼豆</span></div>
+        <div class="capability"><strong>作品交付</strong><span>本地管理、备份与导出</span></div>
+      </div>
+    </section>
+
+    <section id="workflow" class="section section-light">
+      <div class="shell">
+        <div class="section-head reveal">
+          <div>
+            <p class="section-kicker">Workflow</p>
+            <h2>从一张照片，到一份能开工的图纸</h2>
+          </div>
+          <p class="section-intro">核心流程默认在设备本地完成。用户能在生成前控制尺寸和颜色数量，在生成后检查每格色号与实际用量。</p>
+        </div>
+        <div class="steps reveal">
+          <article class="step"><span class="step-number">01</span><h3>导入与裁切</h3><p>从相册、相机或文件选择主体，校正方向并确定方形构图。</p></article>
+          <article class="step"><span class="step-number">02</span><h3>设置规格</h3><p>选择画板尺寸、颜色数量、肤色保护和孤点去噪。</p></article>
+          <article class="step"><span class="step-number">03</span><h3>生成与核对</h3><p>通过颜色科学算法映射色卡，查看编号格子和颜色统计。</p></article>
+          <article class="step"><span class="step-number">04</span><h3>保存与导出</h3><p>保存到本地作品库，导出 PNG、PDF 与采购数量清单。</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="screenshots" class="section section-dark">
+      <div class="shell">
+        <div class="section-head reveal">
+          <div>
+            <p class="section-kicker">Real product</p>
+            <h2>先看真实界面，再决定是否运行</h2>
+          </div>
+          <p class="section-intro">以下全部来自现有 Android 与 Windows 运行截图。点击图片可放大检查，不用概念图替代产品。</p>
+        </div>
+        <div class="gallery reveal">
+          <button class="shot" type="button" data-shot="screenshots/home-android.png" data-caption="Android 首页">
+            <img src="screenshots/home-android.png" alt="拼豆 AI 设计 Android 首页" loading="lazy">
+            <span class="shot-meta"><strong>Android 首页</strong><span>离线入口与最近作品</span></span>
+          </button>
+          <div class="gallery-side">
+            <button class="shot" type="button" data-shot="screenshots/custom-board-windows.png" data-caption="Windows 自定义画板">
+              <img src="screenshots/custom-board-windows.png" alt="Windows 自定义画板" loading="lazy">
+              <span class="shot-meta"><strong>自定义画板</strong><span>画笔 / 填充 / 取色</span></span>
+            </button>
+            <button class="shot" type="button" data-shot="screenshots/settings-windows.png" data-caption="Windows 设置与隐私说明">
+              <img src="screenshots/settings-windows.png" alt="Windows 设置与隐私说明" loading="lazy">
+              <span class="shot-meta"><strong>设置中心</strong><span>算法 / 主题 / 隐私</span></span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="architecture" class="section section-teal">
+      <div class="shell">
+        <div class="section-head reveal">
+          <div>
+            <p class="section-kicker">Color science</p>
+            <h2>每一个格子，怎样找到对应色号</h2>
+          </div>
+          <p class="section-intro">转换不是普通像素滤镜。输入图像经过裁切、缩放、聚类和感知色差匹配，最终形成可统计、可购买、可打印的色号数据。</p>
+        </div>
+        <div class="pipeline reveal" aria-label="图片转换技术流程">
+          <div class="pipe"><span>INPUT</span><strong>照片方向校正</strong></div>
+          <div class="pipe"><span>FRAME</span><strong>正方形裁切</strong></div>
+          <div class="pipe"><span>GRID</span><strong>目标格数缩放</strong></div>
+          <div class="pipe"><span>CLUSTER</span><strong>LAB 聚类降色</strong></div>
+          <div class="pipe"><span>MATCH</span><strong>CIEDE2000 匹配</strong></div>
+          <div class="pipe"><span>PALETTE</span><strong>品牌色号映射</strong></div>
+          <div class="pipe"><span>OUTPUT</span><strong>图纸与用量清单</strong></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-light">
+      <div class="shell">
+        <div class="section-head reveal">
+          <div>
+            <p class="section-kicker">Workspace</p>
+            <h2>不止一次转换，而是一套创作工作台</h2>
+          </div>
+          <p class="section-intro">照片制图是主入口，手动画板、文字拼豆、多品牌色卡、作品管理和可选 AI 能力围绕同一份图纸协作。</p>
+        </div>
+        <div class="feature-list reveal">
+          <article class="feature"><b>多品牌色卡</b><p>按品牌与系列浏览色号、RGB、HEX 和 LAB 信息，支持检索与导出。</p></article>
+          <article class="feature"><b>手动画板</b><p>使用画笔、橡皮、填充、取色和移动工具，直接编辑每一颗豆。</p></article>
+          <article class="feature"><b>文字拼豆</b><p>把文字渲染为像素稿，为名字、标语和汉字作品提供快速起点。</p></article>
+          <article class="feature"><b>作品资料库</b><p>本地保存、分类、收藏、批量管理、回收站与再次编辑。</p></article>
+          <article class="feature"><b>换机备份</b><p>导出作品、配置、画板和历史记录，在另一台设备恢复。</p></article>
+          <article class="feature"><b>可选 AI 连接</b><p>按需配置兼容 API，用于 AI 制图、对话和多模型工作流。</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="start" class="section section-light">
+      <div class="shell start-layout">
+        <div class="reveal">
+          <p class="section-kicker">Run locally</p>
+          <h2>从源码运行</h2>
+          <ul class="requirements">
+            <li>Flutter 与 Dart 版本满足 <code>pubspec.yaml</code></li>
+            <li>Windows 需要 C++ 桌面开发工具链</li>
+            <li>Android 需要 SDK、模拟器或已连接真机</li>
+          </ul>
+          <div class="note">基础照片转换无需服务端。只有 AI 和云同步相关能力需要额外配置。</div>
+        </div>
+        <div class="reveal" aria-label="运行命令">
+          <div class="command"><code>git clone https://github.com/xuange6610/PindouAI.git</code><button class="copy" type="button">复制</button></div>
+          <div class="command"><code>cd PindouAI &amp;&amp; flutter pub get</code><button class="copy" type="button">复制</button></div>
+          <div class="command"><code>flutter run -d windows</code><button class="copy" type="button">复制</button></div>
+          <div class="command"><code>flutter run -d android</code><button class="copy" type="button">复制</button></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="closing">
+      <div class="shell closing-inner reveal">
+        <h2>代码、真实界面、架构和运行步骤都在同一个仓库。</h2>
+        <a class="button" href="https://github.com/xuange6610/PindouAI">前往 GitHub 仓库 ↗</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="shell footer-inner">
+      <span>拼豆 AI 设计 · Copyright © 2026 xuan</span>
+      <span><a href="https://github.com/xuange6610/PindouAI/blob/main/LICENSE">Apache-2.0</a> · 第三方素材权利归各自权利人</span>
+    </div>
+  </footer>
+
+  <dialog id="lightbox" aria-labelledby="lightbox-title">
+    <div class="dialog-bar"><strong id="lightbox-title">界面截图</strong><button class="dialog-close" type="button" aria-label="关闭">×</button></div>
+    <img class="dialog-image" alt="放大的产品界面截图">
+  </dialog>
+
+  <script>
+    const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const reveals = document.querySelectorAll('.reveal');
+    if (reducedMotion || !('IntersectionObserver' in window)) {
+      reveals.forEach((item) => item.classList.add('visible'));
+    } else {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        });
+      }, { threshold: 0.12 });
+      reveals.forEach((item) => observer.observe(item));
+    }
+
+    document.querySelectorAll('.copy').forEach((button) => {
+      button.addEventListener('click', async () => {
+        const value = button.parentElement.querySelector('code').textContent;
+        await navigator.clipboard.writeText(value);
+        button.textContent = '已复制';
+        setTimeout(() => { button.textContent = '复制'; }, 1400);
+      });
+    });
+
+    const dialog = document.querySelector('#lightbox');
+    const dialogImage = dialog.querySelector('.dialog-image');
+    const dialogTitle = dialog.querySelector('#lightbox-title');
+    document.querySelectorAll('[data-shot]').forEach((button) => {
+      button.addEventListener('click', () => {
+        dialogImage.src = button.dataset.shot;
+        dialogImage.alt = button.dataset.caption;
+        dialogTitle.textContent = button.dataset.caption;
+        dialog.showModal();
+      });
+    });
+    dialog.querySelector('.dialog-close').addEventListener('click', () => dialog.close());
+    dialog.addEventListener('click', (event) => { if (event.target === dialog) dialog.close(); });
+  </script>
+</body>
+</html>

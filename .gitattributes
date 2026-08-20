@@ -1,0 +1,26 @@
+* text=auto
+
+*.dart text eol=lf
+*.py text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.json text eol=lf
+*.html text eol=lf
+*.css text eol=lf
+*.js text eol=lf
+*.ts text eol=lf
+*.vue text eol=lf
+*.md text eol=lf
+*.sh text eol=lf
+*.bat text eol=crlf
+*.ps1 text eol=crlf
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.heic binary
+*.ttf binary
+*.jar binary
+*.ico binary
+
+assets/fonts/NotoSansSC-VF.ttf filter=lfs diff=lfs merge=lfs -text
