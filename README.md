@@ -39,9 +39,11 @@ Pages 用于展示真实界面、工作流程和技术结构，不会在浏览�
 
 - [Android APK](https://github.com/xuange6610/PindouAI/releases/download/v2.8.10/PindouAI-Android-v2.8.10.apk)
 - [Windows x64 安装程序](https://github.com/xuange6610/PindouAI/releases/download/v2.8.10/PindouAI-Windows-v2.8.10-x64-Setup.exe)
+- [Android Lite APK（不含实体图纸）](https://github.com/xuange6610/PindouAI/releases/download/v2.8.10/PindouAI-Android-v2.8.10-Lite.apk)
+- [Windows Lite 安装程序（不含实体图纸）](https://github.com/xuange6610/PindouAI/releases/download/v2.8.10/PindouAI-Windows-v2.8.10-x64-Lite-Setup.exe)
 - [版本说明与校验值](https://github.com/xuange6610/PindouAI/releases/tag/v2.8.10)
 
-Android 包使用项目测试签名，适合直接安装体验，不用于应用商店上架。Android 与 Windows 正式包均内置 1265 张授权图纸；图纸版权条款见 [ARTWORK_LICENSE.md](ARTWORK_LICENSE.md)。
+完整 Android 与 Windows 包使用项目测试签名/安装程序，均内置 1265 张授权图纸；Lite 包不含实体图纸文件，仅保留核心制图和 4 个开源示例。图纸版权条款见 [ARTWORK_LICENSE.md](ARTWORK_LICENSE.md)。
 
 ## 核心能力
 
