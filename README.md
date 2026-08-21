@@ -27,6 +27,7 @@
 ## 在线参观
 
 - [GitHub Pages 产品展示](https://xuange6610.github.io/PindouAI/)
+- [完整使用 Wiki](https://github.com/xuange6610/PindouAI/wiki)
 - [源代码仓库](https://github.com/xuange6610/PindouAI)
 - [问题反馈](https://github.com/xuange6610/PindouAI/issues)
 

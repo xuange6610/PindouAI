@@ -33,7 +33,9 @@
     .nav-links { display:flex; min-width:0; flex:1; align-items:center; justify-content:flex-end; gap:22px; }
     .nav-links a { min-height:44px; display:inline-flex; align-items:center; text-decoration:none; font-size:14px; font-weight:700; white-space:nowrap; }
     .nav-links a:hover { color:var(--yellow); }
+    .nav-github { min-height:40px!important; padding-inline:13px; border:1px solid rgba(255,255,255,.45); border-radius:4px; }
     .nav-download { padding-inline:14px; color:var(--ink)!important; background:var(--yellow); border-radius:4px; }
+    .short-label { display:none; }
 
     .hero { position:relative; min-height:720px; height:min(820px,92svh); display:flex; align-items:center; color:var(--white); background:#302c2a url("screenshots/home-android.png") 78% 18%/auto 112% no-repeat; overflow:hidden; }
     .hero::before { content:""; position:absolute; inset:0; background:linear-gradient(90deg,rgba(28,25,24,.98) 0 41%,rgba(28,25,24,.82) 58%,rgba(28,25,24,.22) 100%); }
@@ -173,7 +175,8 @@
     @keyframes enter { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:none; } }
 
     @media (max-width:960px) {
-      .nav-links a:not(.nav-download) { display:none; }
+      .nav-links a:not(.nav-github):not(.nav-download) { display:none; }
+      .nav-links { gap:10px; }
       .hero { background-position:85% 20%; }
       .hero-copy { width:min(680px,72%); }
       .download-grid,.library-layout,.output-layout,.source-layout { grid-template-columns:1fr; }
@@ -194,7 +197,10 @@
       .nav-inner { gap:12px; }
       .brand { font-size:14px; }
       .brand-mark { width:31px; height:31px; }
+      .nav-github { min-height:42px!important; padding-inline:9px; font-size:13px!important; }
       .nav-download { min-height:42px!important; padding-inline:10px; font-size:13px!important; }
+      .wide-label { display:none; }
+      .short-label { display:inline; }
       .hero { min-height:690px; height:calc(100svh - 20px); background-position:60% top; background-size:auto 105%; }
       .hero::before { background:rgba(28,25,24,.78); }
       .hero-copy { width:100%; padding-top:54px; }
@@ -236,7 +242,7 @@
 </head>
 <body>
   <a class="skip-link" href="#main">跳到主要内容</a>
-  <nav class="site-nav" aria-label="主要导航"><div class="shell nav-inner"><a class="brand" href="#top" aria-label="返回页面顶部"><span class="brand-mark" aria-hidden="true"></span><span>拼豆 AI 设计</span></a><div class="nav-links"><a href="#install">安装</a><a href="#create">照片制图</a><a href="#library">完整图库</a><a href="#functions">全部功能</a><a href="#privacy">隐私</a><a class="nav-download" href="https://github.com/xuange6610/PindouAI/releases/tag/v2.8.10">下载完整包</a></div></div></nav>
+  <nav class="site-nav" aria-label="主要导航"><div class="shell nav-inner"><a class="brand" href="#top" aria-label="返回页面顶部"><span class="brand-mark" aria-hidden="true"></span><span>拼豆 AI 设计</span></a><div class="nav-links"><a class="nav-github" href="https://github.com/xuange6610/PindouAI" aria-label="打开 PindouAI GitHub 项目主页"><span class="wide-label">GitHub 主页</span><span class="short-label">GitHub</span></a><a href="#install">安装</a><a href="#create">照片制图</a><a href="#library">完整图库</a><a href="#functions">全部功能</a><a href="#privacy">隐私</a><a class="nav-download" href="https://github.com/xuange6610/PindouAI/releases/latest">最新下载</a></div></div></nav>
   <main id="main">
     <section id="top" class="hero" aria-labelledby="hero-title"><div class="shell"><div class="hero-copy"><p class="hero-kicker">Android APK 完整功能手册</p><h1 id="hero-title">拼豆 AI 设计</h1><p class="hero-lead">把照片、文字和内置图纸，转换成真正能制作的品牌色号拼豆图。</p><div class="hero-actions"><a class="button button-primary" href="https://github.com/xuange6610/PindouAI/releases/download/v2.8.10/PindouAI-Android-v2.8.10.apk">下载 Android APK</a><a class="button button-secondary" href="#install">查看安装与使用教程</a></div><div class="hero-proof" aria-label="完整版本概览"><div><strong>1265</strong><span>张内置授权图纸</span></div><div><strong>20-200</strong><span>目标画板格数</span></div><div><strong>离线</strong><span>核心照片转换</span></div><div><strong>PNG/PDF</strong><span>图纸与清单导出</span></div></div></div></div></section>
     <nav class="chapter-nav" aria-label="功能章节"><div class="shell"><a href="#download">正式版</a><a href="#install">安装</a><a href="#create">照片制图</a><a href="#library">图纸库</a><a href="#board">自由创作</a><a href="#screen-map">界面地图</a><a href="#functions">功能地图</a><a href="#output">导出</a><a href="#privacy">隐私</a><a href="#source">源码</a></div></nav>
