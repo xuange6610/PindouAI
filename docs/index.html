@@ -177,6 +177,8 @@
       .hero { background-position:85% 20%; }
       .hero-copy { width:min(680px,72%); }
       .download-grid,.library-layout,.output-layout,.source-layout { grid-template-columns:1fr; }
+      .source-layout { grid-template-columns:minmax(0,1fr); }
+      .source-layout > * { min-width:0; }
       .install-steps { grid-template-columns:repeat(2,1fr); }
       .guide-row,.guide-row.reverse { grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr); gap:34px; }
       .function-map { grid-template-columns:repeat(2,1fr); }
