@@ -67,6 +67,8 @@ app.*.map.json
 # Machine-local configuration
 .vscode/
 **/local.properties
+.vs/
+**/.vs/
 
 # Release files and local source material
 /artifacts/
@@ -76,8 +78,6 @@ app.*.map.json
 /*.apk
 /*.exe
 /*.zip
-/爆款拼豆高清图纸电子素材创意手工个性DIY像素画图纸/
 /android/app/src/main/assets/pindou_originals/
-/assets/pindou_collection/*
-!/assets/pindou_collection/manifest.opensource.json
-!/assets/pindou_collection/sample_*.png
+/installer/artwork/
+/installer/verify-install/

@@ -3,437 +3,271 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#201d1d">
-  <meta name="description" content="拼豆 AI 设计：把照片、文字和灵感转换成真正能制作的品牌色号拼豆图纸。">
+  <meta name="theme-color" content="#211e1d">
+  <meta name="description" content="PindouAI 安卓 APK 完整功能手册：下载、安装、照片转图纸、1265 张内置图纸、自定义画板、文字拼豆、作品管理、导出、AI 与隐私说明。">
+  <meta property="og:title" content="拼豆 AI 设计 | Android APK 完整功能手册">
+  <meta property="og:description" content="离线把照片、文字和灵感转换成真正能制作的品牌色号拼豆图纸。">
+  <meta property="og:image" content="https://xuange6610.github.io/PindouAI/screenshots/home-android.png">
   <link rel="icon" href="favicon.png" type="image/png">
-  <title>拼豆 AI 设计 | 离线优先拼豆图纸工作台</title>
+  <title>拼豆 AI 设计 | Android APK 完整功能手册</title>
   <style>
-    :root {
-      --ink: #201d1d;
-      --muted: #6f6865;
-      --paper: #fffaf6;
-      --white: #ffffff;
-      --coral: #f15f51;
-      --coral-dark: #c63f35;
-      --teal: #147d78;
-      --teal-pale: #dff2ef;
-      --gold: #f4c84a;
-      --line: #e9ded8;
-      --max: 1180px;
-      color-scheme: light;
+    :root { --ink:#211e1d; --ink-soft:#3b3533; --muted:#736b67; --paper:#fff9f5; --white:#fff; --coral:#ef6253; --coral-dark:#b93630; --teal:#167d76; --teal-dark:#0e5955; --teal-pale:#ddf1ee; --yellow:#f2c94c; --line:#e7dcd6; --max:1180px; color-scheme:light; }
+    * { box-sizing:border-box; letter-spacing:0; }
+    html { scroll-behavior:smooth; scroll-padding-top:126px; }
+    body { margin:0; color:var(--ink); background:var(--paper); font-family:"Microsoft YaHei","PingFang SC","Noto Sans SC",sans-serif; line-height:1.7; overflow-wrap:anywhere; }
+    img { display:block; max-width:100%; }
+    a { color:inherit; }
+    button,a { -webkit-tap-highlight-color:transparent; }
+    button { font:inherit; }
+    :focus-visible { outline:3px solid var(--yellow); outline-offset:4px; }
+    .shell { width:min(calc(100% - 40px),var(--max)); margin-inline:auto; }
+    .skip-link { position:fixed; left:16px; top:-80px; z-index:100; padding:10px 14px; color:var(--ink); background:var(--yellow); }
+    .skip-link:focus { top:12px; }
+
+    .site-nav { position:fixed; inset:0 0 auto; z-index:40; height:66px; color:var(--white); background:rgba(26,24,23,.96); border-bottom:1px solid rgba(255,255,255,.14); }
+    .nav-inner { height:100%; display:flex; align-items:center; gap:28px; }
+    .brand { display:flex; flex:0 0 auto; align-items:center; gap:10px; text-decoration:none; font-weight:900; }
+    .brand-mark { position:relative; width:36px; height:36px; border:2px solid var(--white); border-radius:50%; background:var(--coral); }
+    .brand-mark::before,.brand-mark::after { content:""; position:absolute; inset:9px; border:2px dotted var(--white); border-radius:50%; }
+    .brand-mark::after { inset:15px; border-style:solid; }
+    .nav-links { display:flex; min-width:0; flex:1; align-items:center; justify-content:flex-end; gap:22px; }
+    .nav-links a { min-height:44px; display:inline-flex; align-items:center; text-decoration:none; font-size:14px; font-weight:700; white-space:nowrap; }
+    .nav-links a:hover { color:var(--yellow); }
+    .nav-download { padding-inline:14px; color:var(--ink)!important; background:var(--yellow); border-radius:4px; }
+
+    .hero { position:relative; min-height:720px; height:min(820px,92svh); display:flex; align-items:center; color:var(--white); background:#302c2a url("screenshots/home-android.png") 78% 18%/auto 112% no-repeat; overflow:hidden; }
+    .hero::before { content:""; position:absolute; inset:0; background:linear-gradient(90deg,rgba(28,25,24,.98) 0 41%,rgba(28,25,24,.82) 58%,rgba(28,25,24,.22) 100%); }
+    .hero-copy { position:relative; z-index:1; width:min(670px,62%); padding-top:62px; animation:enter .55s ease-out both; }
+    .hero-kicker { margin:0 0 12px; color:var(--yellow); font-size:14px; font-weight:900; }
+    h1 { margin:0; max-width:670px; font-size:clamp(46px,6vw,78px); line-height:1.05; font-weight:950; }
+    .hero-lead { max-width:620px; margin:24px 0 0; font-size:clamp(20px,2.4vw,28px); line-height:1.5; color:#fff6f1; }
+    .hero-actions { display:flex; flex-wrap:wrap; gap:12px; margin-top:32px; }
+    .button { min-height:48px; display:inline-flex; align-items:center; justify-content:center; padding:11px 18px; border:1px solid transparent; border-radius:4px; text-decoration:none; font-weight:900; cursor:pointer; }
+    .button-primary { background:var(--coral); color:var(--white); }
+    .button-primary:hover { background:var(--coral-dark); }
+    .button-secondary { border-color:rgba(255,255,255,.58); color:var(--white); background:rgba(0,0,0,.2); }
+    .button-secondary:hover { border-color:var(--yellow); color:var(--yellow); }
+    .hero-proof { display:grid; max-width:650px; grid-template-columns:repeat(4,1fr); margin-top:34px; border-top:1px solid rgba(255,255,255,.25); }
+    .hero-proof div { padding:18px 14px 0 0; }
+    .hero-proof strong { display:block; color:var(--yellow); font-size:22px; }
+    .hero-proof span { display:block; color:#d9d1cd; font-size:12px; }
+
+    .chapter-nav { position:sticky; top:66px; z-index:30; color:var(--white); background:var(--teal-dark); border-bottom:1px solid rgba(255,255,255,.2); }
+    .chapter-nav .shell { display:flex; overflow-x:auto; scrollbar-width:none; }
+    .chapter-nav .shell::-webkit-scrollbar { display:none; }
+    .chapter-nav a { min-height:54px; display:inline-flex; flex:0 0 auto; align-items:center; padding:0 15px; text-decoration:none; font-size:13px; font-weight:800; white-space:nowrap; border-left:1px solid rgba(255,255,255,.14); }
+    .chapter-nav a:last-child { border-right:1px solid rgba(255,255,255,.14); }
+    .chapter-nav a:hover { color:var(--yellow); background:rgba(0,0,0,.12); }
+
+    .section { padding:92px 0; }
+    .section-white { background:var(--white); }
+    .section-paper { background:var(--paper); }
+    .section-teal { background:var(--teal-pale); }
+    .section-ink { color:var(--white); background:var(--ink); }
+    .section-heading { max-width:820px; margin-bottom:44px; }
+    .section-label { margin:0 0 8px; color:var(--coral-dark); font-size:13px; font-weight:900; }
+    .section-ink .section-label { color:var(--yellow); }
+    h2 { margin:0; font-size:clamp(32px,4.2vw,52px); line-height:1.15; }
+    .section-intro { max-width:760px; margin:16px 0 0; color:var(--muted); font-size:17px; }
+    .section-ink .section-intro { color:#cfc6c2; }
+
+    .download-grid { display:grid; grid-template-columns:1.1fr .9fr; gap:20px; }
+    .download-primary { min-height:310px; display:flex; flex-direction:column; justify-content:space-between; padding:32px; color:var(--white); background:var(--coral); border-radius:8px; }
+    .download-primary h3 { max-width:560px; margin:0; font-size:31px; line-height:1.25; }
+    .download-primary p { max-width:590px; margin:14px 0 0; color:#fff4ef; }
+    .download-primary .button { align-self:flex-start; color:var(--coral-dark); background:var(--white); }
+    .download-secondary { display:grid; grid-template-rows:1fr 1fr; gap:20px; }
+    .download-item { padding:25px; background:var(--white); border:1px solid var(--line); border-radius:8px; }
+    .download-item h3 { margin:0; font-size:20px; }
+    .download-item p { margin:8px 0 15px; color:var(--muted); font-size:14px; }
+    .text-link { color:var(--teal-dark); font-weight:900; text-underline-offset:4px; }
+
+    .install-steps { display:grid; grid-template-columns:repeat(4,1fr); border:1px solid var(--line); background:var(--line); gap:1px; }
+    .install-step { min-height:210px; padding:28px 24px; background:var(--white); }
+    .step-no { display:block; color:var(--coral); font-size:36px; font-weight:950; line-height:1; }
+    .install-step h3 { margin:16px 0 8px; font-size:18px; }
+    .install-step p { margin:0; color:var(--muted); font-size:14px; }
+
+    .guide-row { display:grid; grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr); gap:64px; align-items:center; padding:58px 0; border-top:1px solid var(--line); }
+    .guide-row:last-child { border-bottom:1px solid var(--line); }
+    .guide-row.reverse { grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr); }
+    .guide-row.reverse .guide-media { order:2; }
+    .guide-media { min-width:0; }
+    .guide-shot { width:100%; padding:0; border:1px solid var(--line); border-radius:8px; overflow:hidden; background:var(--white); cursor:zoom-in; }
+    .guide-shot img { width:100%; aspect-ratio:4/3; object-fit:cover; object-position:top; transition:transform .25s ease; }
+    .guide-shot.phone img { aspect-ratio:9/16; max-height:620px; object-fit:contain; background:#f3ebe6; }
+    .guide-shot:hover img { transform:scale(1.012); }
+    .shot-caption { display:flex; justify-content:space-between; gap:16px; padding:13px 16px; color:var(--muted); font-size:12px; text-align:left; }
+    .shot-caption strong { color:var(--ink); font-size:14px; }
+    .guide-copy h3 { margin:0; font-size:clamp(26px,3vw,38px); line-height:1.2; }
+    .guide-copy>p { margin:14px 0 0; color:var(--muted); }
+    .how-list { display:grid; gap:12px; margin:24px 0 0; padding:0; list-style:none; counter-reset:how; }
+    .how-list li { position:relative; min-height:46px; padding:9px 0 9px 50px; counter-increment:how; }
+    .how-list li::before { content:counter(how); position:absolute; left:0; top:4px; width:38px; height:38px; display:grid; place-items:center; color:var(--white); background:var(--teal); border-radius:50%; font-weight:900; }
+
+    .library-layout { display:grid; grid-template-columns:1fr 1fr; gap:54px; align-items:center; }
+    .preview-wall { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; padding:8px; background:var(--ink); border-radius:8px; }
+    .preview-wall img { width:100%; aspect-ratio:3/4; object-fit:cover; background:var(--white); }
+    .library-copy h2 { max-width:600px; }
+    .library-copy>p { color:var(--muted); }
+    .library-stats { display:grid; grid-template-columns:repeat(3,1fr); margin-top:28px; border:1px solid #b7d7d3; }
+    .library-stats div { padding:19px; border-right:1px solid #b7d7d3; }
+    .library-stats div:last-child { border-right:0; }
+    .library-stats strong { display:block; color:var(--teal-dark); font-size:23px; }
+    .library-stats span { font-size:12px; color:var(--muted); }
+
+    .function-map { display:grid; grid-template-columns:repeat(3,1fr); gap:1px; border:1px solid #48413e; background:#48413e; }
+    .function { min-height:230px; padding:27px; background:var(--ink-soft); }
+    .function:nth-child(2),.function:nth-child(5),.function:nth-child(8) { background:#302b29; }
+    .function b { display:block; color:var(--yellow); font-size:13px; }
+    .function h3 { margin:10px 0 8px; font-size:20px; }
+    .function p { margin:0; color:#cfc6c2; font-size:14px; }
+    .function .entry { display:block; margin-top:18px; color:#a9d7d3; font-size:12px; font-weight:800; }
+    .screen-map { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+    .screen-map article { min-height:220px; padding:22px; background:var(--white); border:1px solid var(--line); border-top:5px solid var(--coral); }
+    .screen-map article:nth-child(3n+2) { border-top-color:var(--teal); }
+    .screen-map article:nth-child(3n+3) { border-top-color:var(--yellow); }
+    .screen-map b { color:var(--coral-dark); font-size:12px; letter-spacing:.04em; }
+    .screen-map h3 { margin:10px 0 8px; font-size:18px; }
+    .screen-map p { margin:0; color:var(--muted); font-size:14px; line-height:1.65; }
+
+    .output-layout { display:grid; grid-template-columns:.85fr 1.15fr; gap:44px; align-items:start; }
+    .output-list { display:grid; gap:14px; }
+    .output-item { padding:20px 22px; background:var(--white); border-left:5px solid var(--coral); }
+    .output-item strong { display:block; }
+    .output-item span { color:var(--muted); font-size:14px; }
+    .science-flow { display:grid; grid-template-columns:repeat(7,1fr); margin-top:50px; border:1px solid #b7d7d3; background:var(--white); }
+    .science-flow div { position:relative; min-height:138px; padding:23px 15px; border-right:1px solid #b7d7d3; }
+    .science-flow div:last-child { border-right:0; }
+    .science-flow div::after { content:">"; position:absolute; z-index:1; right:-13px; top:50px; width:26px; height:26px; display:grid; place-items:center; color:var(--white); background:var(--teal); border-radius:50%; font-weight:900; }
+    .science-flow div:last-child::after { display:none; }
+    .science-flow span { display:block; color:var(--coral-dark); font-size:11px; font-weight:900; }
+    .science-flow strong { display:block; margin-top:7px; font-size:14px; line-height:1.45; }
+
+    .privacy-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:18px; }
+    .privacy-item { min-height:190px; padding:26px; color:var(--white); background:var(--teal-dark); border-radius:8px; }
+    .privacy-item:nth-child(2),.privacy-item:nth-child(3) { color:var(--ink); background:var(--white); border:1px solid var(--line); }
+    .privacy-item h3 { margin:0 0 9px; font-size:19px; }
+    .privacy-item p { margin:0; color:inherit; opacity:.82; }
+    .source-layout { display:grid; grid-template-columns:.85fr 1.15fr; gap:52px; align-items:start; }
+    .requirements { margin:20px 0 0; padding-left:20px; color:var(--muted); }
+    .command { position:relative; min-width:0; margin-bottom:12px; padding:18px 94px 18px 18px; color:#f8efeb; background:#2d2927; border-radius:4px; overflow:auto; white-space:nowrap; font-family:Consolas,"Courier New",monospace; }
+    .copy { position:absolute; top:10px; right:10px; min-width:68px; min-height:38px; border:1px solid #6a625e; border-radius:4px; color:var(--white); background:#423c39; cursor:pointer; }
+    .copy:hover { border-color:var(--yellow); color:var(--yellow); }
+    .notice { margin-top:18px; padding:16px 18px; color:#493d1c; background:#fff0b8; border-left:5px solid var(--yellow); }
+    .closing { padding:74px 0; color:var(--white); background:var(--coral-dark); }
+    .closing-inner { display:flex; align-items:center; justify-content:space-between; gap:32px; }
+    .closing h2 { max-width:700px; }
+    .closing .button { color:var(--coral-dark); background:var(--white); }
+    footer { padding:34px 0; color:#b7aeaa; background:#171514; font-size:13px; }
+    .footer-inner { display:flex; justify-content:space-between; gap:24px; }
+    footer a:hover { color:var(--yellow); }
+
+    dialog { width:min(1100px,calc(100% - 28px)); max-height:calc(100% - 28px); padding:0; color:var(--white); background:#171514; border:1px solid #655d59; border-radius:8px; }
+    dialog::backdrop { background:rgba(0,0,0,.84); }
+    .dialog-bar { min-height:58px; display:flex; align-items:center; justify-content:space-between; gap:18px; padding:9px 12px 9px 17px; border-bottom:1px solid #45403d; }
+    .dialog-close { width:44px; height:44px; border:1px solid #706762; border-radius:50%; color:var(--white); background:transparent; cursor:pointer; font-size:23px; }
+    .dialog-image { max-height:calc(100vh - 100px); margin:auto; object-fit:contain; }
+    .reveal { opacity:0; transform:translateY(16px); transition:opacity .45s ease,transform .45s ease; }
+    .reveal.visible { opacity:1; transform:none; }
+    @keyframes enter { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:none; } }
+
+    @media (max-width:960px) {
+      .nav-links a:not(.nav-download) { display:none; }
+      .hero { background-position:85% 20%; }
+      .hero-copy { width:min(680px,72%); }
+      .download-grid,.library-layout,.output-layout,.source-layout { grid-template-columns:1fr; }
+      .install-steps { grid-template-columns:repeat(2,1fr); }
+      .guide-row,.guide-row.reverse { grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr); gap:34px; }
+      .function-map { grid-template-columns:repeat(2,1fr); }
+      .screen-map { grid-template-columns:repeat(2,1fr); }
+      .science-flow { grid-template-columns:repeat(4,1fr); }
+      .science-flow div:nth-child(4) { border-right:0; }
+      .science-flow div:nth-child(n+5) { border-top:1px solid #b7d7d3; }
+      .science-flow div:nth-child(4)::after { display:none; }
     }
-
-    * { box-sizing: border-box; letter-spacing: 0; }
-    html { scroll-behavior: smooth; }
-    body {
-      margin: 0;
-      color: var(--ink);
-      background: var(--paper);
-      font-family: "FZLanTingHeiS", "Microsoft YaHei", "PingFang SC", sans-serif;
-      line-height: 1.65;
+    @media (max-width:680px) {
+      .shell { width:min(calc(100% - 28px),var(--max)); }
+      .site-nav { height:58px; }
+      .nav-inner { gap:12px; }
+      .brand { font-size:14px; }
+      .brand-mark { width:31px; height:31px; }
+      .nav-download { min-height:42px!important; padding-inline:10px; font-size:13px!important; }
+      .hero { min-height:690px; height:calc(100svh - 20px); background-position:60% top; background-size:auto 105%; }
+      .hero::before { background:rgba(28,25,24,.78); }
+      .hero-copy { width:100%; padding-top:54px; }
+      h1 { font-size:44px; }
+      .hero-lead { font-size:20px; }
+      .hero-actions { margin-top:25px; }
+      .hero-actions .button { width:100%; }
+      .hero-proof { grid-template-columns:repeat(2,1fr); margin-top:25px; }
+      .chapter-nav { top:58px; }
+      .section { padding:68px 0; }
+      .section-heading { margin-bottom:32px; }
+      .download-primary { min-height:350px; padding:25px; }
+      .download-secondary { grid-template-rows:auto; }
+      .install-steps { grid-template-columns:1fr; }
+      .install-step { min-height:auto; }
+      .guide-row,.guide-row.reverse { grid-template-columns:1fr; gap:28px; padding:44px 0; }
+      .guide-row.reverse .guide-media { order:initial; }
+      .guide-shot img { aspect-ratio:16/10; }
+      .guide-shot.phone img { aspect-ratio:9/15; max-height:600px; }
+      .preview-wall { grid-template-columns:repeat(3,1fr); }
+      .library-stats { grid-template-columns:1fr; }
+      .library-stats div { border-right:0; border-bottom:1px solid #b7d7d3; }
+      .library-stats div:last-child { border-bottom:0; }
+      .function-map { grid-template-columns:1fr; }
+      .screen-map { grid-template-columns:1fr; }
+      .function { min-height:auto; }
+      .science-flow { grid-template-columns:1fr 1fr; }
+      .science-flow div,.science-flow div:nth-child(4) { border-right:1px solid #b7d7d3; border-top:1px solid #b7d7d3; }
+      .science-flow div:nth-child(-n+2) { border-top:0; }
+      .science-flow div:nth-child(even) { border-right:0; }
+      .science-flow div::after { display:none; }
+      .privacy-grid { grid-template-columns:1fr; }
+      .privacy-item { min-height:auto; }
+      .closing-inner,.footer-inner { align-items:flex-start; flex-direction:column; }
+      .closing .button { width:100%; }
     }
-    img { display: block; max-width: 100%; }
-    a { color: inherit; }
-    button, a { -webkit-tap-highlight-color: transparent; }
-    button { font: inherit; }
-    :focus-visible { outline: 3px solid var(--gold); outline-offset: 4px; }
-    .shell { width: min(calc(100% - 40px), var(--max)); margin: 0 auto; }
-    .skip-link { position: fixed; left: 16px; top: -80px; z-index: 20; background: var(--gold); padding: 10px 14px; color: var(--ink); }
-    .skip-link:focus { top: 12px; }
-
-    .site-nav {
-      position: fixed;
-      inset: 0 0 auto;
-      z-index: 10;
-      height: 64px;
-      color: var(--white);
-      background: rgba(24, 22, 22, .92);
-      border-bottom: 1px solid rgba(255, 255, 255, .14);
-    }
-    .nav-inner { height: 100%; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
-    .brand { display: flex; align-items: center; gap: 11px; text-decoration: none; font-weight: 900; }
-    .brand-mark { width: 34px; height: 34px; border-radius: 50%; background: var(--coral); display: grid; place-items: center; border: 2px solid var(--white); }
-    .brand-mark::after { content: ""; width: 14px; height: 14px; border-radius: 50%; border: 2px dotted var(--white); }
-    .nav-links { display: flex; align-items: center; gap: 24px; }
-    .nav-links a { text-decoration: none; font-size: 14px; font-weight: 700; }
-    .nav-links a:hover { color: var(--gold); }
-    .repo-link { border: 1px solid rgba(255,255,255,.45); padding: 8px 12px; border-radius: 4px; }
-
-    .hero {
-      position: relative;
-      height: min(760px, calc(100svh - 32px));
-      min-height: 560px;
-      display: flex;
-      align-items: center;
-      color: var(--white);
-      background-color: #393635;
-      background-image: url("screenshots/custom-board-windows.png");
-      background-size: cover;
-      background-position: center;
-      overflow: hidden;
-    }
-    .hero::before { content: ""; position: absolute; inset: 0; background: rgba(22, 20, 20, .77); }
-    .hero-copy { position: relative; z-index: 1; max-width: 720px; padding-top: 54px; animation: hero-in .65s ease-out both; }
-    .eyebrow { margin: 0 0 14px; color: var(--gold); font-weight: 900; font-size: 14px; text-transform: uppercase; }
-    h1 { margin: 0; max-width: 720px; font-size: 64px; line-height: 1.08; font-weight: 950; }
-    .hero-lead { margin: 24px 0 0; max-width: 650px; font-size: 24px; line-height: 1.55; color: #fff4ef; }
-    .hero-detail { max-width: 620px; margin: 13px 0 0; color: #d9d2ce; font-size: 16px; }
-    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 34px; }
-    .button { display: inline-flex; min-height: 46px; align-items: center; justify-content: center; padding: 10px 18px; border-radius: 4px; text-decoration: none; font-weight: 900; border: 1px solid transparent; cursor: pointer; }
-    .button-primary { background: var(--coral); color: var(--white); }
-    .button-primary:hover { background: var(--coral-dark); }
-    .button-secondary { border-color: rgba(255,255,255,.55); color: var(--white); background: rgba(0,0,0,.12); }
-    .button-secondary:hover { border-color: var(--gold); color: var(--gold); }
-    .hero-stats { display: flex; flex-wrap: wrap; gap: 28px; margin-top: 38px; padding-top: 22px; border-top: 1px solid rgba(255,255,255,.22); }
-    .hero-stats strong { display: block; font-size: 23px; color: var(--gold); }
-    .hero-stats span { color: #d9d2ce; font-size: 13px; }
-
-    .capability-band { background: var(--teal); color: var(--white); }
-    .capability-grid { min-height: 112px; display: grid; grid-template-columns: repeat(4, 1fr); align-items: stretch; }
-    .capability { padding: 25px 22px; border-left: 1px solid rgba(255,255,255,.18); }
-    .capability:last-child { border-right: 1px solid rgba(255,255,255,.18); }
-    .capability strong { display: block; font-size: 16px; }
-    .capability span { color: #cce5e2; font-size: 13px; }
-
-    .section { padding: 96px 0; }
-    .section-light { background: var(--white); }
-    .section-dark { background: var(--ink); color: var(--white); }
-    .section-teal { background: var(--teal-pale); }
-    .section-head { display: grid; grid-template-columns: .8fr 1.2fr; gap: 64px; align-items: end; margin-bottom: 48px; }
-    .section-kicker { margin: 0 0 9px; color: var(--coral-dark); font-size: 13px; font-weight: 900; text-transform: uppercase; }
-    h2 { margin: 0; font-size: 40px; line-height: 1.2; }
-    .section-intro { margin: 0; color: var(--muted); font-size: 17px; }
-    .section-dark .section-intro { color: #c9c1bd; }
-
-    .steps { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
-    .step { padding: 28px 24px 32px; border-left: 1px solid var(--line); }
-    .step:last-child { border-right: 1px solid var(--line); }
-    .step-number { display: block; color: var(--coral); font-size: 34px; font-weight: 950; }
-    .step h3 { margin: 9px 0 8px; font-size: 19px; }
-    .step p { margin: 0; color: var(--muted); font-size: 14px; }
-
-    .gallery { display: grid; grid-template-columns: 1.45fr .75fr; gap: 18px; align-items: stretch; }
-    .shot { appearance: none; padding: 0; border: 1px solid #403b39; background: #2c2928; color: inherit; text-align: left; cursor: zoom-in; overflow: hidden; border-radius: 6px; }
-    .shot img { width: 100%; height: 430px; object-fit: cover; object-position: top; transition: transform .35s ease; }
-    .shot:hover img { transform: scale(1.018); }
-    .shot-meta { display: flex; justify-content: space-between; gap: 18px; padding: 16px 18px; }
-    .shot-meta strong { font-size: 15px; }
-    .shot-meta span { color: #aaa19c; font-size: 12px; }
-    .gallery-side { display: grid; grid-template-rows: 1fr 1fr; gap: 18px; min-height: 0; }
-    .gallery-side .shot img { height: 161px; }
-
-    .pipeline { display: grid; grid-template-columns: repeat(7, 1fr); align-items: stretch; border: 1px solid #b6d9d5; background: var(--white); }
-    .pipe { position: relative; min-height: 150px; padding: 26px 16px; border-right: 1px solid #b6d9d5; }
-    .pipe:last-child { border-right: 0; }
-    .pipe::after { content: "→"; position: absolute; right: -13px; top: 57px; z-index: 1; width: 26px; height: 26px; display: grid; place-items: center; color: var(--white); background: var(--teal); border-radius: 50%; font-weight: 900; }
-    .pipe:last-child::after { display: none; }
-    .pipe span { color: var(--coral-dark); font-size: 12px; font-weight: 900; }
-    .pipe strong { display: block; margin-top: 8px; font-size: 15px; line-height: 1.45; }
-
-    .feature-list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); }
-    .feature { min-height: 174px; padding: 26px; background: var(--paper); }
-    .feature b { display: block; margin-bottom: 10px; font-size: 18px; }
-    .feature p { margin: 0; color: var(--muted); font-size: 14px; }
-
-    .start-layout { display: grid; grid-template-columns: .8fr 1.2fr; gap: 60px; align-items: start; }
-    .start-layout > * { min-width: 0; }
-    .requirements { margin: 24px 0 0; padding-left: 20px; color: var(--muted); }
-    .command { position: relative; margin-bottom: 12px; padding: 18px 96px 18px 18px; background: #282423; color: #f8f0ec; border-radius: 5px; overflow: auto; white-space: nowrap; font-family: Consolas, "Courier New", monospace; }
-    .copy { position: absolute; top: 10px; right: 10px; min-width: 66px; min-height: 36px; border: 1px solid #655e5a; border-radius: 4px; color: var(--white); background: #3a3533; cursor: pointer; }
-    .copy:hover { border-color: var(--gold); color: var(--gold); }
-    .note { margin-top: 18px; padding: 16px 18px; border-left: 5px solid var(--gold); background: #fff4ca; color: #4b4020; }
-
-    .closing { padding: 76px 0; color: var(--white); background: var(--coral-dark); }
-    .closing-inner { display: flex; justify-content: space-between; align-items: center; gap: 36px; }
-    .closing h2 { max-width: 640px; }
-    .closing .button { background: var(--white); color: var(--coral-dark); }
-    footer { padding: 36px 0; background: #171515; color: #ada5a1; font-size: 13px; }
-    .footer-inner { display: flex; justify-content: space-between; gap: 24px; }
-    footer a:hover { color: var(--gold); }
-
-    dialog { width: min(1100px, calc(100% - 32px)); max-height: calc(100% - 32px); padding: 0; border: 1px solid #5d5652; border-radius: 6px; background: #171515; color: var(--white); }
-    dialog::backdrop { background: rgba(0,0,0,.82); }
-    .dialog-bar { display: flex; align-items: center; justify-content: space-between; gap: 20px; padding: 12px 16px; border-bottom: 1px solid #3f3a38; }
-    .dialog-close { width: 40px; height: 40px; border: 1px solid #69615d; border-radius: 50%; background: transparent; color: var(--white); cursor: pointer; font-size: 22px; }
-    .dialog-image { max-height: calc(100vh - 116px); margin: auto; object-fit: contain; }
-    .reveal { opacity: 0; transform: translateY(18px); transition: opacity .55s ease, transform .55s ease; }
-    .reveal.visible { opacity: 1; transform: none; }
-
-    @keyframes hero-in { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: none; } }
-
-    @media (max-width: 900px) {
-      .nav-links a:not(.repo-link) { display: none; }
-      h1 { font-size: 48px; }
-      .hero-lead { font-size: 20px; }
-      .capability-grid { grid-template-columns: repeat(2, 1fr); }
-      .capability:nth-child(2) { border-right: 1px solid rgba(255,255,255,.18); }
-      .section-head, .start-layout { grid-template-columns: 1fr; gap: 22px; }
-      .steps { grid-template-columns: repeat(2, 1fr); }
-      .step:nth-child(2) { border-right: 1px solid var(--line); }
-      .gallery { grid-template-columns: 1fr; }
-      .gallery-side { grid-template-columns: 1fr 1fr; grid-template-rows: auto; }
-      .pipeline { grid-template-columns: repeat(4, 1fr); }
-      .pipe:nth-child(4) { border-right: 0; }
-      .pipe:nth-child(4)::after { display: none; }
-      .pipe:nth-child(n+5) { border-top: 1px solid #b6d9d5; }
-      .feature-list { grid-template-columns: repeat(2, 1fr); }
-    }
-
-    @media (max-width: 620px) {
-      .shell { width: min(calc(100% - 28px), var(--max)); }
-      .site-nav { height: 58px; }
-      .brand { font-size: 14px; }
-      .brand-mark { width: 30px; height: 30px; }
-      .repo-link { padding: 7px 9px; }
-      .hero { height: calc(100svh - 28px); min-height: 590px; background-position: 29% center; }
-      .hero-copy { padding-top: 42px; }
-      h1 { font-size: 40px; }
-      .hero-lead { margin-top: 18px; font-size: 18px; }
-      .hero-detail { font-size: 14px; }
-      .hero-actions { margin-top: 24px; }
-      .button { width: 100%; }
-      .hero-stats { gap: 18px; margin-top: 25px; }
-      .hero-stats strong { font-size: 19px; }
-      .capability-grid { grid-template-columns: 1fr 1fr; }
-      .capability { padding: 18px 14px; }
-      .section { padding: 68px 0; }
-      h2 { font-size: 31px; }
-      .section-head { margin-bottom: 32px; }
-      .steps { grid-template-columns: 1fr; }
-      .step, .step:nth-child(2) { border-right: 1px solid var(--line); }
-      .shot img { height: 260px; }
-      .gallery-side { grid-template-columns: 1fr; }
-      .gallery-side .shot img { height: 220px; }
-      .pipeline { grid-template-columns: 1fr 1fr; }
-      .pipe, .pipe:nth-child(4) { border-right: 1px solid #b6d9d5; border-top: 1px solid #b6d9d5; }
-      .pipe:nth-child(-n+2) { border-top: 0; }
-      .pipe:nth-child(even) { border-right: 0; }
-      .pipe::after { display: none; }
-      .feature-list { grid-template-columns: 1fr; }
-      .feature { min-height: auto; }
-      .closing-inner, .footer-inner { align-items: flex-start; flex-direction: column; }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      html { scroll-behavior: auto; }
-      *, *::before, *::after { animation: none !important; transition: none !important; }
-      .reveal { opacity: 1; transform: none; }
-    }
+    @media (prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } *,*::before,*::after { animation:none!important; transition:none!important; } .reveal { opacity:1; transform:none; } }
   </style>
 </head>
 <body>
   <a class="skip-link" href="#main">跳到主要内容</a>
-  <nav class="site-nav" aria-label="主要导航">
-    <div class="shell nav-inner">
-      <a class="brand" href="#top" aria-label="返回首页">
-        <span class="brand-mark" aria-hidden="true"></span>
-        <span>拼豆 AI 设计</span>
-      </a>
-      <div class="nav-links">
-        <a href="#workflow">工作流程</a>
-        <a href="#screenshots">真实界面</a>
-        <a href="#architecture">技术原理</a>
-        <a href="#start">快速开始</a>
-        <a class="repo-link" href="https://github.com/xuange6610/PindouAI">GitHub ↗</a>
-      </div>
-    </div>
-  </nav>
-
+  <nav class="site-nav" aria-label="主要导航"><div class="shell nav-inner"><a class="brand" href="#top" aria-label="返回页面顶部"><span class="brand-mark" aria-hidden="true"></span><span>拼豆 AI 设计</span></a><div class="nav-links"><a href="#install">安装</a><a href="#create">照片制图</a><a href="#library">完整图库</a><a href="#functions">全部功能</a><a href="#privacy">隐私</a><a class="nav-download" href="https://github.com/xuange6610/PindouAI/releases/tag/v2.8.10">下载完整包</a></div></div></nav>
   <main id="main">
-    <section id="top" class="hero" aria-labelledby="hero-title">
-      <div class="shell hero-copy">
-        <p class="eyebrow">Offline-first bead design studio</p>
-        <h1 id="hero-title">拼豆 AI 设计</h1>
-        <p class="hero-lead">把照片、文字和灵感，转换成真正能制作的品牌色号拼豆图纸。</p>
-        <p class="hero-detail">从裁切、降色和色卡匹配，到编号格子、用量统计、手动画板与 PDF 导出，一套 Flutter 应用完成。</p>
-        <div class="hero-actions">
-          <a class="button button-primary" href="https://github.com/xuange6610/PindouAI">查看源代码</a>
-          <a class="button button-secondary" href="#screenshots">先看真实界面</a>
-        </div>
-        <div class="hero-stats" aria-label="项目能力概览">
-          <div><strong>20-200</strong><span>目标画板格数</span></div>
-          <div><strong>5+</strong><span>品牌色卡体系</span></div>
-          <div><strong>离线</strong><span>核心图片转换</span></div>
-          <div><strong>PNG / PDF</strong><span>图纸与清单导出</span></div>
-        </div>
-      </div>
-    </section>
+    <section id="top" class="hero" aria-labelledby="hero-title"><div class="shell"><div class="hero-copy"><p class="hero-kicker">Android APK 完整功能手册</p><h1 id="hero-title">拼豆 AI 设计</h1><p class="hero-lead">把照片、文字和内置图纸，转换成真正能制作的品牌色号拼豆图。</p><div class="hero-actions"><a class="button button-primary" href="https://github.com/xuange6610/PindouAI/releases/download/v2.8.10/PindouAI-Android-v2.8.10.apk">下载 Android APK</a><a class="button button-secondary" href="#install">查看安装与使用教程</a></div><div class="hero-proof" aria-label="完整版本概览"><div><strong>1265</strong><span>张内置授权图纸</span></div><div><strong>20-200</strong><span>目标画板格数</span></div><div><strong>离线</strong><span>核心照片转换</span></div><div><strong>PNG/PDF</strong><span>图纸与清单导出</span></div></div></div></div></section>
+    <nav class="chapter-nav" aria-label="功能章节"><div class="shell"><a href="#download">正式版</a><a href="#install">安装</a><a href="#create">照片制图</a><a href="#library">图纸库</a><a href="#board">自由创作</a><a href="#screen-map">界面地图</a><a href="#functions">功能地图</a><a href="#output">导出</a><a href="#privacy">隐私</a><a href="#source">源码</a></div></nav>
 
-    <section class="capability-band" aria-label="核心能力">
-      <div class="shell capability-grid">
-        <div class="capability"><strong>照片转图纸</strong><span>裁切、降色、去噪、编号</span></div>
-        <div class="capability"><strong>品牌色号</strong><span>LAB 与 CIEDE2000 匹配</span></div>
-        <div class="capability"><strong>自由创作</strong><span>手动画板与文字拼豆</span></div>
-        <div class="capability"><strong>作品交付</strong><span>本地管理、备份与导出</span></div>
-      </div>
-    </section>
+    <section id="download" class="section section-paper"><div class="shell"><div class="section-heading reveal"><p class="section-label">正式下载</p><h2>安卓 APK 和电脑 EXE，两个完整版本</h2><p class="section-intro">两个正式包都内置 1265 张授权图纸。Android 是通用 APK；Windows 是单文件安装程序，安装后直接从开始菜单运行。</p></div><div class="download-grid reveal"><article class="download-primary"><div><h3>Android v2.8.10 完整 APK</h3><p>适合手机和平板。包含照片制图、完整图库、画板、文字、色卡、作品管理、导出、备份和可选 AI 工作流。</p></div><a class="button" href="https://github.com/xuange6610/PindouAI/releases/download/v2.8.10/PindouAI-Android-v2.8.10.apk">下载 APK</a></article><div class="download-secondary"><article class="download-item"><h3>Windows x64 完整 EXE</h3><p>一个安装程序封装 Flutter 桌面应用与全部图纸资源。</p><a class="text-link" href="https://github.com/xuange6610/PindouAI/releases/download/v2.8.10/PindouAI-Windows-v2.8.10-x64-Setup.exe">下载 Windows 安装程序</a></article><article class="download-item"><h3>校验与更新说明</h3><p>Release 页面提供文件大小、SHA-256、测试范围和签名说明。</p><a class="text-link" href="https://github.com/xuange6610/PindouAI/releases/tag/v2.8.10">打开 v2.8.10 Release</a></article></div></div></div></section>
 
-    <section id="workflow" class="section section-light">
-      <div class="shell">
-        <div class="section-head reveal">
-          <div>
-            <p class="section-kicker">Workflow</p>
-            <h2>从一张照片，到一份能开工的图纸</h2>
-          </div>
-          <p class="section-intro">核心流程默认在设备本地完成。用户能在生成前控制尺寸和颜色数量，在生成后检查每格色号与实际用量。</p>
-        </div>
-        <div class="steps reveal">
-          <article class="step"><span class="step-number">01</span><h3>导入与裁切</h3><p>从相册、相机或文件选择主体，校正方向并确定方形构图。</p></article>
-          <article class="step"><span class="step-number">02</span><h3>设置规格</h3><p>选择画板尺寸、颜色数量、肤色保护和孤点去噪。</p></article>
-          <article class="step"><span class="step-number">03</span><h3>生成与核对</h3><p>通过颜色科学算法映射色卡，查看编号格子和颜色统计。</p></article>
-          <article class="step"><span class="step-number">04</span><h3>保存与导出</h3><p>保存到本地作品库，导出 PNG、PDF 与采购数量清单。</p></article>
-        </div>
-      </div>
-    </section>
+    <section id="install" class="section section-white"><div class="shell"><div class="section-heading reveal"><p class="section-label">Android 安装</p><h2>下载后四步开始制作</h2><p class="section-intro">APK 使用项目测试签名，适合直接安装体验。Android 首次安装来自浏览器的 APK 时，系统可能要求允许当前浏览器安装未知应用。</p></div><div class="install-steps reveal"><article class="install-step"><span class="step-no">01</span><h3>下载 APK</h3><p>点击本页下载按钮，等待文件完整保存到手机“下载”目录。</p></article><article class="install-step"><span class="step-no">02</span><h3>允许本次安装</h3><p>按系统提示允许浏览器或文件管理器安装未知应用，仅需针对当前来源开启。</p></article><article class="install-step"><span class="step-no">03</span><h3>打开拼豆 AI</h3><p>安装完成后启动应用。核心照片转换无需账号，也不要求连接服务端。</p></article><article class="install-step"><span class="step-no">04</span><h3>选择照片或图纸</h3><p>从相册导入自己的照片，或进入完整图库选一张现成图纸开始。</p></article></div></div></section>
 
-    <section id="screenshots" class="section section-dark">
-      <div class="shell">
-        <div class="section-head reveal">
-          <div>
-            <p class="section-kicker">Real product</p>
-            <h2>先看真实界面，再决定是否运行</h2>
-          </div>
-          <p class="section-intro">以下全部来自现有 Android 与 Windows 运行截图。点击图片可放大检查，不用概念图替代产品。</p>
-        </div>
-        <div class="gallery reveal">
-          <button class="shot" type="button" data-shot="screenshots/home-android.png" data-caption="Android 首页">
-            <img src="screenshots/home-android.png" alt="拼豆 AI 设计 Android 首页" loading="lazy">
-            <span class="shot-meta"><strong>Android 首页</strong><span>离线入口与最近作品</span></span>
-          </button>
-          <div class="gallery-side">
-            <button class="shot" type="button" data-shot="screenshots/custom-board-windows.png" data-caption="Windows 自定义画板">
-              <img src="screenshots/custom-board-windows.png" alt="Windows 自定义画板" loading="lazy">
-              <span class="shot-meta"><strong>自定义画板</strong><span>画笔 / 填充 / 取色</span></span>
-            </button>
-            <button class="shot" type="button" data-shot="screenshots/settings-windows.png" data-caption="Windows 设置与隐私说明">
-              <img src="screenshots/settings-windows.png" alt="Windows 设置与隐私说明" loading="lazy">
-              <span class="shot-meta"><strong>设置中心</strong><span>算法 / 主题 / 隐私</span></span>
-            </button>
-          </div>
-        </div>
-      </div>
-    </section>
+    <section id="create" class="section section-paper"><div class="shell"><div class="section-heading reveal"><p class="section-label">主工作流</p><h2>从照片到可制作图纸</h2><p class="section-intro">首页把最常用的入口放在第一屏。选图后先调整裁切和参数，再生成色号明确、数量可核对的拼豆方案。</p></div><article class="guide-row reveal"><div class="guide-media"><button class="guide-shot phone" type="button" data-shot="screenshots/home-android.png" data-caption="Android 首页"><img src="screenshots/home-android.png" alt="拼豆 AI Android 首页，包含相册选择、相机和最近作品入口"><span class="shot-caption"><strong>真实 Android 首页</strong><span>离线入口与最近作品</span></span></button></div><div class="guide-copy"><h3>先从清晰照片开始</h3><p>点击“从相册选择”导入已有照片，也可以调用相机。批量选择适合一次处理多张素材，最近作品用于继续之前的图纸。</p><ol class="how-list"><li>在首页选择照片或拍摄主体。</li><li>移动、缩放并确认正方形生成区域。</li><li>选择画板大小、品牌色卡和颜色数量。</li></ol></div></article><article class="guide-row reverse reveal"><div class="guide-media"><button class="guide-shot phone" type="button" data-shot="screenshots/result-android.png" data-caption="Android 参数调整界面"><img src="screenshots/result-android.png" alt="拼豆 AI Android 参数调整界面，包含画板尺寸和颜色数量"><span class="shot-caption"><strong>真实参数界面</strong><span>画板、色数和肤色保护</span></span></button></div><div class="guide-copy"><h3>控制尺寸、颜色和细节</h3><p>20 到 200 格决定成品大小；颜色数量决定简洁度；肤色保护、主体识别和孤点去噪帮助保留轮廓并减少零碎豆点。</p><ol class="how-list"><li>根据底板和预计豆数选择尺寸。</li><li>拖动颜色数量滑杆控制层次。</li><li>按题材启用肤色保护或去噪，再生成图纸。</li></ol></div></article></div></section>
 
-    <section id="architecture" class="section section-teal">
-      <div class="shell">
-        <div class="section-head reveal">
-          <div>
-            <p class="section-kicker">Color science</p>
-            <h2>每一个格子，怎样找到对应色号</h2>
-          </div>
-          <p class="section-intro">转换不是普通像素滤镜。输入图像经过裁切、缩放、聚类和感知色差匹配，最终形成可统计、可购买、可打印的色号数据。</p>
-        </div>
-        <div class="pipeline reveal" aria-label="图片转换技术流程">
-          <div class="pipe"><span>INPUT</span><strong>照片方向校正</strong></div>
-          <div class="pipe"><span>FRAME</span><strong>正方形裁切</strong></div>
-          <div class="pipe"><span>GRID</span><strong>目标格数缩放</strong></div>
-          <div class="pipe"><span>CLUSTER</span><strong>LAB 聚类降色</strong></div>
-          <div class="pipe"><span>MATCH</span><strong>CIEDE2000 匹配</strong></div>
-          <div class="pipe"><span>PALETTE</span><strong>品牌色号映射</strong></div>
-          <div class="pipe"><span>OUTPUT</span><strong>图纸与用量清单</strong></div>
-        </div>
-      </div>
-    </section>
+    <section id="library" class="section section-teal"><div class="shell library-layout reveal"><div class="preview-wall" aria-label="应用界面截图"><img src="screenshots/home-android.png" alt="Android 首页与底部导航"><img src="screenshots/collection-android.jpg" alt="Android 拼豆图合集，显示分类、搜索和图纸卡片"><img src="screenshots/result-android.png" alt="Android 图纸参数调整界面"><img src="screenshots/custom-board-windows.png" alt="Windows 自定义画板界面"></div><div class="library-copy"><p class="section-label">完整内置图库</p><h2>1265 张图纸，安装后离线浏览</h2><p>图纸按动漫人物、卡通、动物、古风、美食、传统文化、游戏角色和其他主题分类。真实图纸库界面同时提供分类筛选、文件名搜索、预览卡片、收藏和高清原图入口；选择“读取高清原图”后可以继续识别、编辑或保存。</p><div class="library-stats"><div><strong>1265</strong><span>高清原图</span></div><div><strong>24</strong><span>顶层分类</span></div><div><strong>离线</strong><span>无需图库服务器</span></div></div><p><a class="text-link" href="https://github.com/xuange6610/PindouAI/blob/main/ARTWORK_LICENSE.md">查看图纸版权声明</a></p></div></div></section>
 
-    <section class="section section-light">
-      <div class="shell">
-        <div class="section-head reveal">
-          <div>
-            <p class="section-kicker">Workspace</p>
-            <h2>不止一次转换，而是一套创作工作台</h2>
-          </div>
-          <p class="section-intro">照片制图是主入口，手动画板、文字拼豆、多品牌色卡、作品管理和可选 AI 能力围绕同一份图纸协作。</p>
-        </div>
-        <div class="feature-list reveal">
-          <article class="feature"><b>多品牌色卡</b><p>按品牌与系列浏览色号、RGB、HEX 和 LAB 信息，支持检索与导出。</p></article>
-          <article class="feature"><b>手动画板</b><p>使用画笔、橡皮、填充、取色和移动工具，直接编辑每一颗豆。</p></article>
-          <article class="feature"><b>文字拼豆</b><p>把文字渲染为像素稿，为名字、标语和汉字作品提供快速起点。</p></article>
-          <article class="feature"><b>作品资料库</b><p>本地保存、分类、收藏、批量管理、回收站与再次编辑。</p></article>
-          <article class="feature"><b>换机备份</b><p>导出作品、配置、画板和历史记录，在另一台设备恢复。</p></article>
-          <article class="feature"><b>可选 AI 连接</b><p>按需配置兼容 API，用于 AI 制图、对话和多模型工作流。</p></article>
-        </div>
-      </div>
-    </section>
+    <section id="board" class="section section-white"><div class="shell"><div class="section-heading reveal"><p class="section-label">自由创作</p><h2>不用照片，也能从空白画板开始</h2><p class="section-intro">自定义画板和文字拼豆适合名字、标语、像素角色和局部修正。桌面版提供更宽的操作区，Android 保留相同数据能力。</p></div><article class="guide-row reveal"><div class="guide-media"><button class="guide-shot" type="button" data-shot="screenshots/custom-board-windows.png" data-caption="Windows 自定义画板"><img src="screenshots/custom-board-windows.png" alt="Windows 自定义画板，包含画笔、橡皮、填充、取色和移动工具"><span class="shot-caption"><strong>真实自定义画板</strong><span>画笔、橡皮、填充、取色</span></span></button></div><div class="guide-copy"><h3>逐格编辑与批量换色</h3><p>新建 20×20 到 200×200 画板，使用画笔、橡皮、填充、取色和移动工具。支持撤销、重做、草稿恢复、批量替换色号以及保存为作品。</p><ol class="how-list"><li>新建画板并选择尺寸和品牌色卡。</li><li>选择颜色后用画笔或填充完成大区域。</li><li>保存为新作品，继续导出图纸和清单。</li></ol></div></article><article class="guide-row reverse reveal"><div class="guide-media"><button class="guide-shot" type="button" data-shot="screenshots/text-bead.png" data-caption="文字拼豆渲染结果"><img src="screenshots/text-bead.png" alt="文字拼豆生成的汉字像素图"><span class="shot-caption"><strong>真实文字渲染结果</strong><span>中文与自定义文字像素化</span></span></button></div><div class="guide-copy"><h3>文字拼豆</h3><p>输入中文、名字或短句，选择字体、字距、画板尺寸和颜色，把文字渲染成像素图。生成结果可以继续进入画板修改，不必一次定稿。</p><ol class="how-list"><li>首页点击“文字拼豆”。</li><li>输入文字并调整尺寸、间距和颜色。</li><li>生成后保存，或送到画板逐格修正。</li></ol></div></article></div></section>
 
-    <section id="start" class="section section-light">
-      <div class="shell start-layout">
-        <div class="reveal">
-          <p class="section-kicker">Run locally</p>
-          <h2>从源码运行</h2>
-          <ul class="requirements">
-            <li>Flutter 与 Dart 版本满足 <code>pubspec.yaml</code></li>
-            <li>Windows 需要 C++ 桌面开发工具链</li>
-            <li>Android 需要 SDK、模拟器或已连接真机</li>
-          </ul>
-          <div class="note">基础照片转换无需服务端。只有 AI 和云同步相关能力需要额外配置。</div>
-        </div>
-        <div class="reveal" aria-label="运行命令">
-          <div class="command"><code>git clone https://github.com/xuange6610/PindouAI.git</code><button class="copy" type="button">复制</button></div>
-          <div class="command"><code>cd PindouAI &amp;&amp; flutter pub get</code><button class="copy" type="button">复制</button></div>
-          <div class="command"><code>flutter run -d windows</code><button class="copy" type="button">复制</button></div>
-          <div class="command"><code>flutter run -d android</code><button class="copy" type="button">复制</button></div>
-        </div>
-      </div>
-    </section>
+    <section id="screen-map" class="section section-paper"><div class="shell"><div class="section-heading reveal"><p class="section-label">逐界面说明</p><h2>从底部导航到每个子页面，功能入口都能找到</h2><p class="section-intro">下面按应用真实页面整理操作路径。打开 APK 后可照着入口逐项体验；需要联网的 AI 页面会明确提示并不会影响离线制图。</p></div><div class="screen-map reveal"><article><b>01 · 首页</b><h3>创建入口与最近作品</h3><p>从相册选择、拍照、批量导入、文字拼豆、图片色号识别、AI 制图都在首页；下方显示最近作品，点击可继续编辑。</p></article><article><b>02 · 处理中心</b><h3>查看后台任务</h3><p>生成大图或 AI 任务时可放到后台，查看排队、处理中、成功、失败和取消状态，完成后直接打开结果。</p></article><article><b>03 · 我的作品</b><h3>整理、批量管理与回收站</h3><p>支持搜索、排序、拖动重排、重命名、再次生成、收藏、批量导入导出、批量保存和删除；误删作品可从回收站恢复。</p></article><article><b>04 · 收藏</b><h3>按分组保存灵感</h3><p>把图纸加入自定义收藏分组，按主题快速筛选；取消收藏不会删除“我的作品”中的原稿。</p></article><article><b>05 · 自定义画板</b><h3>逐格绘制与工程文件</h3><p>设置宽高和品牌色库，使用画笔、橡皮、填充、取色、移动、撤销/重做、批量换色；自动草稿、临时回收站和 .beadboard 工程导入导出保证可恢复。</p></article><article><b>06 · 图纸库</b><h3>1265 张授权图纸</h3><p>按 24 个顶层分类浏览，支持原文件名搜索、预览/高清原图切换、收藏、管理和继续识别或编辑。</p></article><article><b>07 · AI 对话</b><h3>对话、附件与分享</h3><p>配置兼容 API 后可新建聊天、发送文字和图片附件、切换模型、查看历史、备注会话，并分享界面截图或 Markdown 聊天记录。</p></article><article><b>08 · 色库</b><h3>查询品牌色号</h3><p>按品牌和系列筛选色卡，搜索编号或颜色名称，查看 RGB、HEX、LAB、尺寸等信息，并可生成色卡图片分享。</p></article><article><b>09 · 我的</b><h3>个性化与数据管理</h3><p>切换语言、主题、强调色、按钮音效和本地音乐；进入 API 设置、软件公告、内置浏览器、换机备份/恢复和版权说明。</p></article><article><b>10 · 结果页</b><h3>检查、修改与交付</h3><p>在真实色、圆形效果、编号格子和颜色统计之间切换；可收藏、重命名、重新调整参数、生成不同方案、AI 修复模糊图、转入画板和导出。</p></article><article><b>11 · 参数与裁切</b><h3>控制生成质量</h3><p>支持单张或批量图片、方向校正、裁切比例、20–200 格尺寸、颜色数量、肤色保护、平滑去噪、抠图和模板选择。</p></article><article><b>12 · 识别与抠图</b><h3>从现成图纸继续加工</h3><p>图片色号识别显示坐标、原图和每格色号；手动抠图用于保留主体、去除背景后再生成拼豆图。</p></article><article><b>13 · AI 制图</b><h3>风格转换和后台任务</h3><p>选择拼豆风格、上传照片、填写补充要求，可当前页等待或放入任务中心；支持失败自动重试、历史记录、任务详情和结果转拼豆。</p></article><article><b>14 · API 设置</b><h3>三类模型与配置管理</h3><p>管理中转地址、协议、密钥、对话/图片/视频模型，支持剪贴板一键导入导出、单项测试和全部模型检测；密钥保存在系统安全存储。</p></article><article><b>15 · AI 用量</b><h3>查看调用成本</h3><p>按今天、本周、本月和本年查看 Token，用图表查看近 7 天和 24 小时趋势，并按用途和模型拆分。</p></article><article><b>16 · 换机备份</b><h3>选择内容完整迁移</h3><p>可选择作品、收藏、画板、回收站、处理历史、图纸库设置和本地音乐导出；新设备选择备份文件即可恢复，API 密钥需要重新填写。</p></article></div></div></section>
 
-    <section class="closing">
-      <div class="shell closing-inner reveal">
-        <h2>代码、真实界面、架构和运行步骤都在同一个仓库。</h2>
-        <a class="button" href="https://github.com/xuange6610/PindouAI">前往 GitHub 仓库 ↗</a>
-      </div>
-    </section>
+    <section id="functions" class="section section-ink"><div class="shell"><div class="section-heading reveal"><p class="section-label">全部功能地图</p><h2>一套应用覆盖创作、管理和交付</h2><p class="section-intro">下面按真实入口说明各模块。基础功能离线可用，AI 模块只有在用户主动配置兼容 API 后才会调用网络。</p></div><div class="function-map reveal"><article class="function"><b>CREATE</b><h3>照片转图纸</h3><p>裁切、降采样、颜色聚类、肤色保护、去噪和品牌色号映射。</p><span class="entry">入口：首页 → 从相册选择</span></article><article class="function"><b>LIBRARY</b><h3>图纸库</h3><p>分类浏览 1265 张内置图纸，收藏、重命名、批量管理和读取高清原图。</p><span class="entry">入口：底部导航 → 图纸库</span></article><article class="function"><b>BOARD</b><h3>自定义画板</h3><p>画笔、橡皮、填充、取色、移动、撤销、草稿、导入图片与批量换色。</p><span class="entry">入口：底部导航 → 画板</span></article><article class="function"><b>TEXT</b><h3>文字拼豆</h3><p>中文和其他文字像素化，控制字体、间距、尺寸、颜色与透明背景。</p><span class="entry">入口：首页 → 文字拼豆</span></article><article class="function"><b>RECOGNIZE</b><h3>图片色号识别</h3><p>本地或 AI 识别图片中的色号，查看坐标图、原图和每个位置的颜色。</p><span class="entry">入口：首页 → 图片色号识别</span></article><article class="function"><b>PALETTE</b><h3>多品牌色卡</h3><p>浏览 Artkal、MARD、COCO、Perler、Hama 等色卡，查询编号和颜色信息。</p><span class="entry">入口：底部导航 → 色库</span></article><article class="function"><b>WORKS</b><h3>作品、收藏与回收站</h3><p>分类、批量选择、重命名、再次编辑、导出、恢复和保留期限管理。</p><span class="entry">入口：底部导航 → 作品 / 收藏</span></article><article class="function"><b>AI</b><h3>AI 对话与制图</h3><p>对话、图片、视频、多模型配置、连接检测、历史记录、附件与生成任务中心。</p><span class="entry">入口：底部导航 → AI</span></article><article class="function"><b>SETTINGS</b><h3>设置、备份与声音</h3><p>主题、语言、点击音效、本地音乐、完整换机备份、API 管理和恢复出厂设置。</p><span class="entry">入口：底部导航 → 我的</span></article></div></div></section>
+
+    <section id="output" class="section section-teal"><div class="shell"><div class="section-heading reveal"><p class="section-label">结果与交付</p><h2>图纸不只可看，还能打印、统计和备料</h2><p class="section-intro">每个格子最终映射到一个品牌色号。结果页把视觉预览、编号图、颜色统计和导出放在同一条工作流中。</p></div><div class="output-layout reveal"><button class="guide-shot" type="button" data-shot="screenshots/settings-windows.png" data-caption="设置与隐私界面"><img src="screenshots/settings-windows.png" alt="拼豆 AI 设置与隐私界面"><span class="shot-caption"><strong>真实设置界面</strong><span>算法、备份、API 与隐私</span></span></button><div class="output-list"><div class="output-item"><strong>真实色预览</strong><span>用方形像素检查整体构图和色彩关系。</span></div><div class="output-item"><strong>圆形拼豆效果</strong><span>用圆形豆粒外观检查成品观感。</span></div><div class="output-item"><strong>带编号格子图</strong><span>每格显示当前品牌颜色编号，适合照图制作。</span></div><div class="output-item"><strong>颜色统计与购买清单</strong><span>按色号统计数量，帮助分装和备料。</span></div><div class="output-item"><strong>PNG 与 PDF</strong><span>保存预览、效果图、编号图和分页打印图纸。</span></div></div></div><div class="science-flow reveal" aria-label="照片转品牌色号图纸的处理流程"><div><span>INPUT</span><strong>照片方向校正</strong></div><div><span>FRAME</span><strong>方形裁切</strong></div><div><span>GRID</span><strong>目标格数缩放</strong></div><div><span>CLUSTER</span><strong>LAB 聚类降色</strong></div><div><span>MATCH</span><strong>CIEDE2000 匹配</strong></div><div><span>PALETTE</span><strong>品牌色号映射</strong></div><div><span>OUTPUT</span><strong>图纸与清单</strong></div></div></div></section>
+
+    <section id="privacy" class="section section-paper"><div class="shell"><div class="section-heading reveal"><p class="section-label">隐私与数据</p><h2>核心制图在本机完成</h2><p class="section-intro">照片转图纸、画板、作品和导出默认在设备本地运行。网络能力被隔离在用户主动配置的 AI 与服务地址中。</p></div><div class="privacy-grid reveal"><article class="privacy-item"><h3>照片默认不上云</h3><p>核心转换直接读取设备上的图片并在本机处理，不要求上传到 PindouAI 服务端。</p></article><article class="privacy-item"><h3>API 密钥由用户掌控</h3><p>兼容 API 的服务地址、密钥和模型由用户自行填写，基础制图无需配置。</p></article><article class="privacy-item"><h3>作品可完整备份</h3><p>作品、配置、画板、回收站和历史可以导出为换机备份，并在另一台设备恢复。</p></article><article class="privacy-item"><h3>源码与图纸分别授权</h3><p>原创源码采用 Apache-2.0；内置图纸遵循 ARTWORK_LICENSE.md，不因仓库公开而允许单独转售。</p></article></div></div></section>
+
+    <section id="source" class="section section-white"><div class="shell source-layout reveal"><div><p class="section-label">开发者入口</p><h2>从源码运行和继续开发</h2><ul class="requirements"><li>安装 Flutter 3.41.6 或满足 pubspec 的兼容版本</li><li>安装 Git LFS 以拉取中文字体、完整图纸和预览</li><li>Windows 需要 Visual Studio C++ 桌面工作负载</li><li>Android 需要 Android SDK、模拟器或真机</li></ul><div class="notice">AI 密钥、签名 keystore、数据库密码和本机 .env 不进入公开仓库。</div></div><div aria-label="源码运行命令"><div class="command"><code>git lfs install</code><button class="copy" type="button">复制</button></div><div class="command"><code>git clone https://github.com/xuange6610/PindouAI.git</code><button class="copy" type="button">复制</button></div><div class="command"><code>cd PindouAI &amp;&amp; flutter pub get</code><button class="copy" type="button">复制</button></div><div class="command"><code>flutter run -d android</code><button class="copy" type="button">复制</button></div><div class="command"><code>flutter run -d windows</code><button class="copy" type="button">复制</button></div></div></div></section>
+    <section class="closing"><div class="shell closing-inner reveal"><h2>下载完整 APK，把第一张照片变成可制作的拼豆图纸。</h2><a class="button" href="https://github.com/xuange6610/PindouAI/releases/tag/v2.8.10">前往 v2.8.10 下载页</a></div></section>
   </main>
-
-  <footer>
-    <div class="shell footer-inner">
-      <span>拼豆 AI 设计 · Copyright © 2026 xuan</span>
-      <span><a href="https://github.com/xuange6610/PindouAI/blob/main/LICENSE">Apache-2.0</a> · 第三方素材权利归各自权利人</span>
-    </div>
-  </footer>
-
-  <dialog id="lightbox" aria-labelledby="lightbox-title">
-    <div class="dialog-bar"><strong id="lightbox-title">界面截图</strong><button class="dialog-close" type="button" aria-label="关闭">×</button></div>
-    <img class="dialog-image" alt="放大的产品界面截图">
-  </dialog>
-
+  <footer><div class="shell footer-inner"><span>拼豆 AI 设计 · Copyright © 2026 xuan</span><span><a href="https://github.com/xuange6610/PindouAI/blob/main/LICENSE">源码 Apache-2.0</a> · <a href="https://github.com/xuange6610/PindouAI/blob/main/ARTWORK_LICENSE.md">图纸版权声明</a></span></div></footer>
+  <dialog id="lightbox" aria-labelledby="lightbox-title"><div class="dialog-bar"><strong id="lightbox-title">产品截图</strong><button class="dialog-close" type="button" aria-label="关闭截图">×</button></div><img class="dialog-image" alt="放大的真实产品截图"></dialog>
   <script>
-    const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const reveals = document.querySelectorAll('.reveal');
-    if (reducedMotion || !('IntersectionObserver' in window)) {
-      reveals.forEach((item) => item.classList.add('visible'));
-    } else {
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
-          entry.target.classList.add('visible');
-          observer.unobserve(entry.target);
-        });
-      }, { threshold: 0.12 });
-      reveals.forEach((item) => observer.observe(item));
-    }
-
-    document.querySelectorAll('.copy').forEach((button) => {
-      button.addEventListener('click', async () => {
-        const value = button.parentElement.querySelector('code').textContent;
-        await navigator.clipboard.writeText(value);
-        button.textContent = '已复制';
-        setTimeout(() => { button.textContent = '复制'; }, 1400);
-      });
-    });
-
-    const dialog = document.querySelector('#lightbox');
-    const dialogImage = dialog.querySelector('.dialog-image');
-    const dialogTitle = dialog.querySelector('#lightbox-title');
-    document.querySelectorAll('[data-shot]').forEach((button) => {
-      button.addEventListener('click', () => {
-        dialogImage.src = button.dataset.shot;
-        dialogImage.alt = button.dataset.caption;
-        dialogTitle.textContent = button.dataset.caption;
-        dialog.showModal();
-      });
-    });
-    dialog.querySelector('.dialog-close').addEventListener('click', () => dialog.close());
-    dialog.addEventListener('click', (event) => { if (event.target === dialog) dialog.close(); });
+    const reducedMotion=matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const reveals=document.querySelectorAll('.reveal');
+    if(reducedMotion||!('IntersectionObserver'in window)){reveals.forEach((item)=>item.classList.add('visible'));}else{const observer=new IntersectionObserver((entries)=>entries.forEach((entry)=>{if(!entry.isIntersecting)return;entry.target.classList.add('visible');observer.unobserve(entry.target);}),{threshold:.1});reveals.forEach((item)=>observer.observe(item));}
+    document.querySelectorAll('.copy').forEach((button)=>button.addEventListener('click',async()=>{const value=button.parentElement.querySelector('code').textContent;try{await navigator.clipboard.writeText(value);button.textContent='已复制';setTimeout(()=>{button.textContent='复制';},1400);}catch(_){button.textContent='手动复制';}}));
+    const dialog=document.querySelector('#lightbox');const dialogImage=dialog.querySelector('.dialog-image');const dialogTitle=dialog.querySelector('#lightbox-title');document.querySelectorAll('[data-shot]').forEach((button)=>button.addEventListener('click',()=>{dialogImage.src=button.dataset.shot;dialogImage.alt=button.dataset.caption;dialogTitle.textContent=button.dataset.caption;dialog.showModal();}));dialog.querySelector('.dialog-close').addEventListener('click',()=>dialog.close());dialog.addEventListener('click',(event)=>{if(event.target===dialog)dialog.close();});
   </script>
 </body>
 </html>

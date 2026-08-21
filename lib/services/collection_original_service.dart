@@ -9,9 +9,9 @@ import 'app_settings.dart';
 class CollectionOriginalService {
   const CollectionOriginalService();
 
-  static const _mediaChannel = MethodChannel(
-    'com.xuan.bead_ai_designer/media',
-  );
+  static const _bundledOriginalRoot = '爆款拼豆高清图纸电子素材创意手工个性DIY像素画图纸';
+
+  static const _mediaChannel = MethodChannel('com.xuan.bead_ai_designer/media');
 
   Future<Uint8List> fetch(String relativePath, {String? baseUrl}) async {
     final localRoot = const String.fromEnvironment('COLLECTION_SOURCE_DIR');
@@ -19,6 +19,27 @@ class CollectionOriginalService {
       final normalized = relativePath.replaceAll('/', Platform.pathSeparator);
       final file = File('$localRoot${Platform.pathSeparator}$normalized');
       if (await file.exists()) return file.readAsBytes();
+    }
+    if (Platform.isWindows) {
+      final normalized = relativePath.replaceAll('/', Platform.pathSeparator);
+      final executableDir = File(Platform.resolvedExecutable).parent.path;
+      final file = File(
+        '$executableDir${Platform.pathSeparator}artwork'
+        '${Platform.pathSeparator}$normalized',
+      );
+      if (await file.exists()) return file.readAsBytes();
+    }
+    final bundledPath =
+        '$_bundledOriginalRoot/${relativePath.replaceAll('\\', '/')}';
+    try {
+      final data = await rootBundle.load(bundledPath);
+      final bytes = data.buffer.asUint8List(
+        data.offsetInBytes,
+        data.lengthInBytes,
+      );
+      if (_isLikelyImage(bytes)) return bytes;
+    } on Object {
+      // Lightweight builds can omit the full artwork library.
     }
     if (Platform.isAndroid) {
       try {

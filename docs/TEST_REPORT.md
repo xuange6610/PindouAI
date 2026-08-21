@@ -1,6 +1,6 @@
 # 《拼豆 AI 设计》交付测试报告
 
-测试日期：2026-08-20
+测试日期：2026-08-21
 版本：2.8.10+28
 版权所有：xuan
 
@@ -8,6 +8,9 @@
 
 - `flutter analyze`：通过，0 issue。
 - `flutter test`：通过，126/126。
+- Android APK：`1,852,245,145` 字节，APK 内置原图条目 `1265/1265`。
+- Windows 安装程序：`1,245,157,779` 字节，静默安装退出码 `0`。
+- Windows 安装后图库：`1265` 个文件，原图总字节 `1,774,279,056`，与授权原图清单一致。
 - CIEDE2000：公开标准测试对结果 2.0425，误差阈值 0.0001。
 - MARD221：总数 221、色号唯一、系列数量、HEX/LAB/尺寸字段校验通过。
 - 转换闭环：图片解码、20×20 映射、色数上限、格子索引、数量守恒通过。
@@ -15,20 +18,18 @@
 - 导出：PNG 可解码，PDF 文件头及文件体生成通过。
 - 后端：`python -m compileall backend/app` 通过。
 
-## Android Release 历史验证
-
-以下为 2026-07-29 对早期 1.0.0+1 APK 的历史验收记录，不代表本次源码公开重新构建了 Android 安装包。
+## v2.8.10 安装包验证
 
 - 包名：`com.xuan.bead_ai_designer`
 - 应用名：拼豆 AI 设计
-- 版本：1.0.0（versionCode 1）
+- 版本：2.8.10（versionCode 28）
 - minSdk：24；targetSdk：36
-- ABI：armeabi-v7a、arm64-v8a、x86_64
-- 安装：Pixel 8 Android 模拟器安装成功。
-- 启动：首页前台 Activity 正常，进程存活，无 FATAL EXCEPTION / Flutter error。
-- 操作：系统相册选择和编辑页实际通过；中文排版与主要页面视觉截图通过。
+- ABI：本次构建目标 `android-arm64`。
+- APK 结构：zipalign 校验通过；APK Signature Scheme v2 校验通过；包内 1265 个授权原图条目存在。
+- Windows 安装：安装到短路径 `artwork`，程序窗口标题为“拼豆 AI 设计”且进程响应正常；安装包不再创建超长 URL 编码资源目录。
 - 签名：APK Signature Scheme v2 校验通过；zipalign 校验通过。
-- SHA-256：`7589625EAEA94D375B2356E30F67B0A46A617962362AAD95C0FA0CAC7D6D8D05`
+- Android SHA-256：`AB4EB09C163D1762F580E38F4B397DD4E0B55FA3303EE8E60D4EF795E94CB2F6`
+- Windows SHA-256：`A5A7F1D1413828A57ADBD7154D15794ABCA0624B098B66A8EC11302DECF569B5`
 
 ## 发布前注意事项
 

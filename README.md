@@ -32,6 +32,14 @@
 
 Pages 用于展示真实界面、工作流程和技术结构，不会在浏览器中上传或处理用户照片。
 
+## 下载正式版
+
+- [Android APK](https://github.com/xuange6610/PindouAI/releases/download/v2.8.10/PindouAI-Android-v2.8.10.apk)
+- [Windows x64 安装程序](https://github.com/xuange6610/PindouAI/releases/download/v2.8.10/PindouAI-Windows-v2.8.10-x64-Setup.exe)
+- [版本说明与校验值](https://github.com/xuange6610/PindouAI/releases/tag/v2.8.10)
+
+Android 包使用项目测试签名，适合直接安装体验，不用于应用商店上架。Android 与 Windows 正式包均内置 1265 张授权图纸；图纸版权条款见 [ARTWORK_LICENSE.md](ARTWORK_LICENSE.md)。
+
 ## 核心能力
 
 | 能力 | 实际作用 |
@@ -55,6 +63,14 @@ Pages 用于展示真实界面、工作流程和技术结构，不会在浏览�
   <tr>
     <td align="center">自定义画板</td>
     <td align="center">算法、主题与隐私设置</td>
+  </tr>
+  <tr>
+    <td width="50%"><img src="docs/screenshots/collection-android.jpg" alt="Android 拼豆图合集"></td>
+    <td width="50%"><img src="docs/screenshots/result-android.png" alt="Android 参数调整与结果入口"></td>
+  </tr>
+  <tr>
+    <td align="center">1265 张图纸的分类、搜索与卡片浏览</td>
+    <td align="center">画板尺寸、色数与生成参数</td>
   </tr>
 </table>
 
@@ -149,7 +165,7 @@ flutter build apk --release
 - 内置色值包含工程预置近似数据，不应冒充特定批次实体豆的实验室测量结果。
 - Apache-2.0 许可证适用于本仓库原创源代码。
 - 公开仓库只跟踪项目自行生成的 `sample_*.png` 和 `manifest.opensource.json`。维护者本地完整图集与用户导入内容具有各自权利归属，不因用于本应用而自动获得 Apache-2.0 授权。
-- 约 1.7 GB 的高清原始素材库及其 `android/app/src/main/assets/pindou_originals/` 本地目录联接不进入 Git 历史。仓库保留压缩预览和全部源代码；Android 中“读取高清原图”属于维护者本地数据扩展，公开源码构建不包含这批原图。
+- 1265 张高清图纸原图和对应预览由 xuan 确认拥有本次公开分发授权，通过 Git LFS 纳入仓库并内置于 Android、Windows 正式包。它们不适用 Apache-2.0，具体条款见 `ARTWORK_LICENSE.md`。
 - 品牌名称仅用于色号兼容说明，相关商标属于各自权利人。
 
 ## 参与维护

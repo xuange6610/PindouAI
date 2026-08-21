@@ -24,3 +24,5 @@
 *.ico binary
 
 assets/fonts/NotoSansSC-VF.ttf filter=lfs diff=lfs merge=lfs -text
+assets/pindou_collection/preview_* filter=lfs diff=lfs merge=lfs -text
+爆款拼豆高清图纸电子素材创意手工个性DIY像素画图纸/** filter=lfs diff=lfs merge=lfs -text
